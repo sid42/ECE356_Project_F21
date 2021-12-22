@@ -23,7 +23,7 @@ except mysql.connector.Error as err:
     print(err)
 
 while True:
-  print("Demographics>") 
+  print("Demographics> ", end = "") 
   userinput = input()
   flags = userinput.split()
   if (flags[0] == "country"):
@@ -34,9 +34,4 @@ while True:
   else:
     print('error')
 
-#SQL
-#update countries set area = "" where code = ""
-
-#CLI
-#country -update {code} --name "India" --area "893475.0"
 
