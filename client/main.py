@@ -23,10 +23,18 @@ while True:
     else:
       print(err)
 
-while True: 
+while True:
+  print("Demographics>") 
   userinput = input()
   flags = userinput.split()
   if (flags[0] == "country"):
-    countries.country(flags[1:], usr, pwd, host, db)
+    if len(flags) > 1:
+      countries.country(flags[1:], usr, pwd, host, db)
+    else:
+      print("invalid input")
   else:
     print('error')
+
+
+#update countries set area = "" where code = ""
+#country -update {code} --name "India" --area "893475.0"
