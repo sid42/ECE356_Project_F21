@@ -5,6 +5,8 @@ Repo for group 35's ECE 356 final project
 Please run `server/load.up.sql` in your preferred database and on your preferred host (preferably marmoset4) before attempting to run the client application. 
 This will load all relevant tables along with their data, primary keys, foreign keys, constraints and indexes into the database. 
 
+Please attempt to run the data loading scripts on marmoset04 as we encountered some permissions issues when trying to run on marmoset03 
+
 Then please run the following to install the necessary python modules to run the client application: 
 ```
 pip3 install tabulate 
