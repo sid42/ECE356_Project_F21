@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS birth_death_rates (
     INDEX(country_name),
     INDEX(year),
     INDEX(crude_birth_rate),
-    INDEX(cride_death_rate)
+    INDEX(crude_death_rate)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/22-Demographics/birth_death_growth_rates.csv' 
