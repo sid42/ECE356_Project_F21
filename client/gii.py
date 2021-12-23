@@ -2,22 +2,22 @@ import mysql.connector
 from tabulate import tabulate
 import tables
 
-def education(options, cnx):
+def gii(options, cnx):
     if (options[0] == "all"):
-        getAllEducation(cnx)
+        getAllGII(cnx)
     elif (options[0] == "insert"):
-        insertCountryEducation(cnx, options[1:])
+        insertCountryGII(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryEducation(cnx, options[1:])
+        deleteCountryGII(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryEducation(cnx, options[1:])
+        updateCountryGII(cnx, options[1:])
     elif options[0] == "get":
-        getCountryEducation(cnx, options[1:])
+        getCountryGII(cnx, options[1:])
 
-def getAllEducation(cnx):
+def getAllGII(cnx):
     cursor = cnx.cursor()
 
-    query = "SELECT * FROM education"
+    query = "SELECT * FROM gender_inequality_index"
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
@@ -25,18 +25,18 @@ def getAllEducation(cnx):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.GIIColumns, tablefmt='pretty'))
 
     cursor.close()
 
-def getCountryEducation(cnx, options):
+def getCountryGII(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) < 2 or len(options) > 10 :
+    if len(options) < 2 or len(options) > 8:
         print("Not enough or too many arguements for a get operation. Please check your command and try again")
         return
 
-    query_start = "SELECT * FROM education WHERE "
+    query_start = "SELECT * FROM gender_inequality_index WHERE "
     substring = []
     for i in range(0, len(options), 2):
         if options[i][1:] == "name":
@@ -63,20 +63,20 @@ def getCountryEducation(cnx, options):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.GIIColumns, tablefmt='pretty'))
 
     cursor.close()
 
 
-def insertCountryEducation(cnx, options):
+def insertCountryGII(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) != 5:
+    if len(options) != 4:
         print("Not enough or too many arguements for an insert operation. Please check your command and try again")
         return
 
-    query = "INSERT INTO education(country_code, country_name, year, gender, years_of_schooling) \
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(options[0], options[1], options[2], options[3], options[4])
+    query = "INSERT INTO gender_inequality_index(country_code, country_name, year, gii) \
+        VALUES ('{0}', '{1}', '{2}', '{3}')".format(options[0], options[1], options[2], options[3])
     try:
         cursor.execute(query)
         print("Insertion query executed successfully")
@@ -88,23 +88,23 @@ def insertCountryEducation(cnx, options):
     cursor.close()
 
 
-def updateCountryEducation(cnx, options):
+def updateCountryGII(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) < 6 or len(options) > 10:
+    if len(options) < 5 or len(options) > 8:
         print("Not enough or too many arguements for an update operation. Please check your command and try again")
         return
 
-    query_start = "UPDATE education SET "
+    query_start = "UPDATE gender_inequality_index SET "
     pre_substring = []
-    for i in range(6, len(options), 2):
+    for i in range(4, len(options), 2):
         if options[i][1:] == "name":
             pre_substring.append("country_name" + " = '" + str(options[i+1]) + "'")
         else:
             pre_substring.append(str(options[i][1:]) + " = '" + str(options[i+1]) + "'")
     
     post_substring = []
-    for i in range(0, 6, 2):
+    for i in range(0, 4, 2):
         if options[i][1:] == "code":
             post_substring.append("country_code" + " = '" + str(options[i+1]) + "'")
         else:
@@ -137,14 +137,14 @@ def updateCountryEducation(cnx, options):
     cnx.commit()
     cursor.close()
 
-def deleteCountryEducation(cnx, options):
+def deleteCountryGII(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) != 6:
+    if len(options) != 4:
         print("Not enough arguements for an delete operation. Please check your command and try again")
         return
 
-    query_start = "DELETE FROM education WHERE "
+    query_start = "DELETE FROM gender_inequality_index WHERE "
     
     substring = []
     for i in range(0, len(options), 2):

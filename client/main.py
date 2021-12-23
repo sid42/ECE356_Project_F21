@@ -2,7 +2,7 @@ import os
 import mysql.connector
 import getpass
 from tabulate import tabulate
-import countries, education, lifeExpectancy, infantMortality, birthDeath
+import countries, education, lifeExpectancy, infantMortality, birthDeath, gni, hdi, gii
 import population
 
 print ("Welcome to Group 35's Demographics App!")
@@ -28,7 +28,7 @@ while True:
   userinput = input()
   flags = userinput.split()
   
-  if len(flags) == 1: 
+  if len(flags) == 1 and flags[0] != "exit": 
     print('invalid input')
     continue
 
@@ -44,6 +44,12 @@ while True:
     infantMortality.im(flags[1:], cnx)
   elif (flags[0] == "birthdeath"): 
     birthDeath.bd(flags[1:], cnx)
+  elif (flags[0] == "gni"): 
+    gni.gni(flags[1:], cnx)
+  elif (flags[0] == "hdi"): 
+    hdi.hdi(flags[1:], cnx)
+  elif (flags[0] == "gii"): 
+    gii.gii(flags[1:], cnx)
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break
