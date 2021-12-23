@@ -31,8 +31,35 @@ def get_all_populations(cnx):
 
     cursor.close()
 
+# population get -country_code CA -year 2000
+# population get -country_name Canada -year 2000
+# population get -country_name CA 
 def get_population_by_options(cnx, options): 
-    print()
+    cursor = cnx.cursor()
+    options = cmd_parser.parse(options)
+
+    query = "SELECT * FROM population".format(name)
+    if 'country_code' in options: 
+        query += "WHERE country_code = '" + options['country_code'] + "'"
+    elif 'country_name' in options: 
+        query += "WHERE country_code = '" + options['country_name'] + "'"
+    else: 
+        print('invalid input')
+        return
+
+    if 'year' in options: 
+        query += "AND WHERE year = " + options['year']
+
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+    result = cursor.fetchall()
+
+    print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
+
+    cursor.close()
 
 def get_population_in_range_by_options(cnx, options): 
     print()
