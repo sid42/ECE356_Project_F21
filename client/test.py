@@ -1,4 +1,4 @@
-import population
+import population, birthDeath, infantMortality, lifeExpectancy
 
 def population_tests(cnx):
     total_population_tests = 11
@@ -7,8 +7,9 @@ def population_tests(cnx):
     # ----------------------------------------------------------------------
     # Tests for: population get
     # ----------------------------------------------------------------------
-    # Test 1 : Get all entries in the population table
-    if population.get_all_populations(cnx): 
+    # Test 1 : Get all entries in the population tables
+    test_cmd = "population all"
+    if population.operation(test_cmd.split(" ")[1:], cnx): 
         tests_passed += 1
 
     # Test 2 : Query population data for Canada by country code
@@ -79,7 +80,7 @@ def population_tests(cnx):
         tests_passed += 1
 
     # ----------------------------------------------------------------------
-    # Tests for: population add
+    # Tests for: population delete
     # ----------------------------------------------------------------------
     # Test 11 : Deleting the entry created in Test 8 
     # The delete operation will return True if the deletion was successful
@@ -89,6 +90,229 @@ def population_tests(cnx):
 
     print(str(tests_passed) + "/" + str(total_population_tests) + " population tests passed")
 
+def birth_death_tests(cnx):
+    total_birth_death_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: birth_death all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the birth_death table
+    test_cmd = "birth_death all"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: birth_death get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query birth_death data for Canada by country code
+    # We know that the dataset contains birth_death information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "birth_death get -code CA" 
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query birth_death data for United States by country name, year 
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "birth_death get -name United_States -year 2011" 
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query birth_death for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "birth_death get -name University_of_Waterloo"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: birth_death insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert birth_death data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "birth_death insert CA Canada 2030 53.6 76.8 4.6 0.25 4.36"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the birth_death data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "birth_death get -code CA -year 2030"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: birth_death update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the growth_rate for Canada in the year 2030 
+    # In this case, it would be the growth_rate value
+    # The operation returns True if the update was successful
+    test_cmd = "birth_death update -code CA -year 2030 -growth_rate 0.7"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: birth_death delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "birth_death delete -code CA -year 2030"
+    if birthDeath.bd(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_birth_death_tests) + " birth_death tests passed")
+
+def infant_mortality_tests(cnx):
+    total_infant_mortality_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: infant_mortality all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the infant_mortality table
+    test_cmd = "infant_mortality all"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: infant_mortality get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query infant_mortality data for Canada by country code
+    # We know that the dataset contains infant_mortality information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "infant_mortality get -code CA" 
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query infant_mortality data for United States by country name, year 
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "infant_mortality get -name United_States -year 2014" 
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query infant_mortality for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "infant_mortality get -name University_of_Waterloo"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: infant_mortality insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert infant_mortality data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "infant_mortality insert CA Canada 2030 53.6 76.8 4.6"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the infant_mortality data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "infant_mortality get -code CA -year 2030"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: infant_mortality update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the infant_mortality for Canada in the year 2030 
+    # In this case, it would be the infant_mortality value
+    # The operation returns True if the update was successful
+    test_cmd = "infant_mortality update -code CA -year 2030 -infant_mortality 0.7"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: infant_mortality delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "infant_mortality delete -code CA -year 2030"
+    if infantMortality.im(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_infant_mortality_tests) + " infant_mortality tests passed")
+    
+def life_expectancy_tests(cnx):
+    total_life_expectancy_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: life_expectancy all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the life_expectancy table
+    test_cmd = "life_expectancy all"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: life_expectancy get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query life_expectancy data for Canada by country code
+    # We know that the dataset contains life_expectancy information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "life_expectancy get -code CA" 
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query life_expectancy data for United States by country name, year 
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "life_expectancy get -name United_States -year 2014" 
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query life_expectancy for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "life_expectancy get -name University_of_Waterloo"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: life_expectancy insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert life_expectancy data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "life_expectancy insert CA Canada 2030 53.6 76.8 4.6"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the life_expectancy data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "life_expectancy get -code CA -year 2030"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: life_expectancy update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the life_expectancy for Canada in the year 2030 
+    # In this case, it would be the life_expectancy value
+    # The operation returns True if the update was successful
+    test_cmd = "life_expectancy update -code CA -year 2030 -life_expectancy 0.7"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: life_expectancy delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "life_expectancy delete -code CA -year 2030"
+    if lifeExpectancy.le(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_life_expectancy_tests) + " life_expectancy tests passed")
+
 def run_tests(cnx, suite):
     if suite == "population": 
         population_tests(cnx)
+    elif suite == "birth_death":
+        birth_death_tests(cnx)
+    elif suite == "infant_mortality":
+        infant_mortality_tests(cnx)
+    elif suite == "life_expectancy":
+        life_expectancy_tests(cnx)
+

@@ -182,7 +182,7 @@ def delete_population(cnx, options):
         qry += " WHERE country_name = '" + options['name'] + "'"
     else: 
         print('invalid input')
-        return False
+        return 
     
     if 'year' in options: 
         qry += " AND year = " + options['year']

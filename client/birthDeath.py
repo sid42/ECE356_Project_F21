@@ -4,18 +4,19 @@ import tables
 
 def bd(options, cnx):
     for i in range(len(options)):
-        options[i] = options[i].replace("_", " ")
-        
+        if (i%2 == 0):
+            options[i] = options[i].replace("_", " ")
+            
     if (options[0] == "all"):
-        getAllBD(cnx)
+        return getAllBD(cnx)
     elif (options[0] == "insert"):
-        insertCountryBD(cnx, options[1:])
+        return insertCountryBD(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryBD(cnx, options[1:])
+        return deleteCountryBD(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryBD(cnx, options[1:])
+        return updateCountryBD(cnx, options[1:])
     elif (options[0] == "get"):
-        getCountryBD(cnx, options[1:])
+        return getCountryBD(cnx, options[1:])
 
 
 def getAllBD(cnx):
@@ -27,11 +28,16 @@ def getAllBD(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
+
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.birthDeathRatesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryBD(cnx, options):
     cursor = cnx.cursor()
@@ -64,11 +70,16 @@ def getCountryBD(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
+    
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.birthDeathRatesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def insertCountryBD(cnx, options):
     cursor = cnx.cursor()
@@ -85,9 +96,11 @@ def insertCountryBD(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def updateCountryBD(cnx, options):
     cursor = cnx.cursor()
@@ -134,9 +147,11 @@ def updateCountryBD(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryBD(cnx, options):
     cursor = cnx.cursor()
@@ -171,6 +186,8 @@ def deleteCountryBD(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True

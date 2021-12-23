@@ -4,18 +4,19 @@ import tables
 
 def im(options, cnx):
     for i in range(len(options)):
-        options[i] = options[i].replace("_", " ")
+        if (i%2 == 0):
+            options[i] = options[i].replace("_", " ")
 
     if (options[0] == "all"):
-        getAllIM(cnx)
+        return getAllIM(cnx)
     elif (options[0] == "insert"):
-        insertCountryIM(cnx, options[1:])
+        return insertCountryIM(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryIM(cnx, options[1:])
+        return deleteCountryIM(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryIM(cnx, options[1:])
+        return updateCountryIM(cnx, options[1:])
     elif (options[0] == "get"):
-        getCountryIM(cnx, options[1:])
+        return getCountryIM(cnx, options[1:])
 
 
 def getAllIM(cnx):
@@ -27,11 +28,15 @@ def getAllIM(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.infantMortalityColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryIM(cnx, options):
     cursor = cnx.cursor()
@@ -64,11 +69,15 @@ def getCountryIM(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.infantMortalityColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def insertCountryIM(cnx, options):
     cursor = cnx.cursor()
@@ -85,9 +94,11 @@ def insertCountryIM(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def updateCountryIM(cnx, options):
     cursor = cnx.cursor()
@@ -134,9 +145,11 @@ def updateCountryIM(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryIM(cnx, options):
     cursor = cnx.cursor()
@@ -171,6 +184,8 @@ def deleteCountryIM(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True

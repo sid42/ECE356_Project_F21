@@ -4,18 +4,19 @@ import tables
 
 def le(options, cnx):
     for i in range(len(options)):
-        options[i] = options[i].replace("_", " ")
+        if (i%2 == 0):
+            options[i] = options[i].replace("_", " ")
         
     if (options[0] == "all"):
-        getAllLE(cnx)
+        return getAllLE(cnx)
     elif (options[0] == "insert"):
-        insertCountryLE(cnx, options[1:])
+        return insertCountryLE(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryLE(cnx, options[1:])
+        return deleteCountryLE(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryLE(cnx, options[1:])
+        return updateCountryLE(cnx, options[1:])
     elif (options[0] == "get"):
-        getCountryLE(cnx, options[1:])
+        return getCountryLE(cnx, options[1:])
 
 
 def getAllLE(cnx):
@@ -27,11 +28,15 @@ def getAllLE(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.lifeExpectancyColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryLE(cnx, options):
     cursor = cnx.cursor()
@@ -64,11 +69,15 @@ def getCountryLE(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.lifeExpectancyColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def insertCountryLE(cnx, options):
     cursor = cnx.cursor()
@@ -85,9 +94,11 @@ def insertCountryLE(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def updateCountryLE(cnx, options):
     cursor = cnx.cursor()
@@ -134,9 +145,11 @@ def updateCountryLE(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryLE(cnx, options):
     cursor = cnx.cursor()
@@ -171,6 +184,8 @@ def deleteCountryLE(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True

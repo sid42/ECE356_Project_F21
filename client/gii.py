@@ -4,7 +4,8 @@ import tables
 
 def gii(options, cnx):
     for i in range(len(options)):
-        options[i] = options[i].replace("_", " ")
+        if (i%2 == 0):
+            options[i] = options[i].replace("_", " ")
         
     if (options[0] == "all"):
         getAllGII(cnx)
