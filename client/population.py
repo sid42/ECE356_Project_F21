@@ -32,9 +32,13 @@ def get_all_populations(cnx):
     cursor.close()
 
 def get_population_by_options(cnx, options): 
+    print()
 
 def get_population_in_range_by_options(cnx, options): 
+    print()
 
 def upsert_population(cnx, options):
+    print()
 
 def delete_population(cnx, options): 
+    print()

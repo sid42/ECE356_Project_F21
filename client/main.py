@@ -3,6 +3,7 @@ import mysql.connector
 import getpass
 from tabulate import tabulate
 import countries
+import population
 
 print ("Welcome to Group 35's Demographics App!")
 usr = input("Username: ")
