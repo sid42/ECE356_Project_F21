@@ -42,7 +42,7 @@ def population_tests(cnx):
 
     # Test 6 : Query population data for range of years that don't exist
     # There is no data for Canada's population between the years 2030 and 2040, so we should expect a False return from the operation
-    test_cmd = "population get-range -name Canada -start_year 2000 -end_year 2005" 
+    test_cmd = "population get-range -name Canada -start_year 2030 -end_year 2040" 
     if population.operation(test_cmd.split(" ")[1:], cnx) == False:
         tests_passed += 1
 
@@ -89,5 +89,6 @@ def population_tests(cnx):
 
     print(str(tests_passed) + "/" + str(total_population_tests) + " population tests passed")
 
-def run_tests(cnx): 
-    population_tests(cnx)
+def run_tests(cnx, suite):
+    if suite == "population": 
+        population_tests(cnx)

@@ -29,7 +29,7 @@ while True:
   userinput = input()
   flags = userinput.split()
   
-  if len(flags) == 1 and flags[0] != "exit" and flags[0] != "help" and flags[0] != "test": 
+  if len(flags) == 1 and flags[0] != "exit" and flags[0] != "help": 
     print('invalid input')
     continue
 
@@ -56,7 +56,7 @@ while True:
   elif (flags[0] == "help"): 
     help_guide.help()
   elif (flags[0] == "test"): 
-    test.run_tests(cnx)
+    test.run_tests(cnx, flags[1])
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break

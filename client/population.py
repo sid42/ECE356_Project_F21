@@ -70,10 +70,8 @@ def get_population_by_options(cnx, options):
     cursor.close()
     
     if len(result) == 0:
-        print('length of result is 0')
         return False
     
-    print('length of result is' + str(len(result)))
     return True
 
 # population get-range -country_code CA -start_year 2000 -end_year 2005
@@ -105,7 +103,6 @@ def get_population_in_range_by_options(cnx, options):
     cursor.close()
 
     if len(result) == 0: 
-        print('length of result is 0')
         return False
 
     return True
