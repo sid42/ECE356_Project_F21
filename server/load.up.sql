@@ -200,7 +200,6 @@ CREATE TABLE IF NOT EXISTS human_development_index (
     FOREIGN KEY (country_code) REFERENCES countries(code),
     INDEX(country_name),
     INDEX(year),
-    INDEX(gender), 
     INDEX(hdi)
 );
 
