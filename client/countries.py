@@ -1,91 +1,124 @@
 import mysql.connector
-import getpass
 from tabulate import tabulate
-import getpass
 
-def country(options, usr, pwd, host, db):
+def country(options, cnx):
     for i in range(len(options)): 
         if (options[i] == "-code"):
-            getCountryByCode(usr, pwd, host, db, options[1])
+            getCountryByCode(cnx, options[1])
         elif (options[i] == "-name"):
-            getCountryByName(usr, pwd, host, db, options[1])
+            getCountryByName(cnx, options[1])
         elif (options[i] == "-all"):
-            getAllCountries(usr, pwd, host, db)
+            getAllCountries(cnx)
         elif (options[i] == "-insert"):
-            insertCountry(usr, pwd, host, db, options[1:])
+            insertCountry(cnx, options[1:])
         elif (options[i] == "-delete"):
-            deleteCountry(usr, pwd, host, db, options[1])
+            deleteCountry(cnx, options[1])
         elif (options[i] == "-update"):
-            updateCountry(usr, pwd, host, db, options[1:])
+            updateCountry(cnx, options[1:])
 
 
-def getCountryByCode(usr, pwd, host, db, code):
-    cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
+def getCountryByCode(cnx, code):  
     cursor = cnx.cursor()
 
     query = "SELECT * FROM countries WHERE code = '{}'".format(code)
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
     print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
 
     cursor.close()
-    cnx.close()
 
-def getCountryByName(usr, pwd, host, db, name):
-    cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
+def getCountryByName(cnx, name):
     cursor = cnx.cursor()
 
     query = "SELECT * FROM countries WHERE name = '{}'".format(name)
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
     print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
 
     cursor.close()
-    cnx.close()
 
-def getAllCountries(usr, pwd, host, db):
-    cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
+def getAllCountries(cnx):
+    
     cursor = cnx.cursor()
 
     query = "SELECT * FROM countries"
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
     print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
 
     cursor.close()
-    cnx.close()
 
-def insertCountry(usr, pwd, host, db, options):
-    cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
+def insertCountry(cnx, options):
     cursor = cnx.cursor()
 
     query = "INSERT INTO countries(code, name, area) VALUES ('{0}', '{1}', '{2}')".format(options[0], options[1], options[2])
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+        print("Insertion query executed successfully")
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not insert, please check your command and try again or use help")
 
     cnx.commit()
     cursor.close()
-    cnx.close()
 
-def deleteCountry(usr, pwd, host, db, code):
-    cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
+def deleteCountry(cnx, code):
     cursor = cnx.cursor()
 
     query = "DELETE FROM countries WHERE code = '{}'".format(code)
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+        print("Deletion query executed successfully")
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not delete, please check your command and try again or use help")
 
     cnx.commit()
     cursor.close()
-    cnx.close()
 
-# def updateCountry(usr, pwd, host, db, options):
-#     cnx = mysql.connector.connect(user = usr, password = pwd, host = host, database = db)
-#     cursor = cnx.cursor()
+def updateCountry(cnx, options):
+    cursor = cnx.cursor()
 
-#     code = options[0]
-#     options.pop(0)
-#     for i in range(len(options), 2):
-#         query = "UPDATE countries SET" + str(options[i]) + "=" + str(options[i+1]) + \
-#         "WHERE code = '{0}'".format(code)
+    code = options.pop(0)
+    query_start = "UPDATE countries SET "
+    query_end = " WHERE code = '{0}'".format(code)
+    substring = []
+    for i in range(0, len(options), 2):
+        substring.append(str(options[i][2:]) + " = '" + str(options[i+1]) + "'")
+    
+
+    if len(substring) == 1:
+        query = query_start + substring[0] + query_end
+    else:
+        query = query_start
+        for i in range(len(substring)-1):
+            substring[i] += ", "
+        for j in range(len(substring)):
+            query += substring[j]
+        query += query_end
+        
+    try:
+        cursor.execute(query)
+        print("Updation query executed successfully")
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not update, please check your command and try again or use help")
+
+    cnx.commit()
+    cursor.close()
+        
