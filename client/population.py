@@ -5,15 +5,15 @@ from tabulate import tabulate
 
 def operation(options, cnx):
     if (options[0] == "all"):
-        get_all_populations(cnx)
+        return get_all_populations(cnx)
     elif (options[0] == "get"):
-        get_population_by_options(cnx, options[1:])
+        return get_population_by_options(cnx, options[1:])
     elif (options[0] == "get-range"):
-        get_population_in_range_by_options(cnx, options[1:])
+        return get_population_in_range_by_options(cnx, options[1:])
     elif (options[0] == "add"):
-        upsert_population(cnx, options[1:])
+        return upsert_population(cnx, options[1:])
     elif (options[0] == "delete"):
-        delete_population(cnx, options[1:])
+        return delete_population(cnx, options[1:])
 
 
 def get_all_populations(cnx): 
@@ -68,6 +68,12 @@ def get_population_by_options(cnx, options):
     result = cursor.fetchall()
     print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
     cursor.close()
+    
+    if len(result) == 0:
+        print('length of result is 0')
+        return False
+    
+    print('length of result is' + str(len(result)))
     return True
 
 # population get-range -country_code CA -start_year 2000 -end_year 2005
@@ -97,6 +103,12 @@ def get_population_in_range_by_options(cnx, options):
     result = cursor.fetchall()
     print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
     cursor.close()
+
+    if len(result) == 0: 
+        print('length of result is 0')
+        return False
+
+    return True
 
 def upsert_population(cnx, options):
     cursor = cnx.cursor()
