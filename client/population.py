@@ -76,7 +76,7 @@ def get_population_in_range_by_options(cnx, options):
         print('invalid input')
         return
 
-    query += " AND year > " + options['start_date'] + " AND year < " + options['end_date']
+    query += " AND year > " + options['start_year'] + " AND year < " + options['end_year']
 
     print(query)
     try:
