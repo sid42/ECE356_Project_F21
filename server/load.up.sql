@@ -3,7 +3,7 @@
 -- load countries data
 CREATE TABLE IF NOT EXISTS countries (
     code    CHAR(2),
-    name    UNIQUE VARCHAR(255), 
+    name    VARCHAR(255) UNIQUE, 
     area    DECIMAL(20,2),
     PRIMARY KEY (code)
 );
