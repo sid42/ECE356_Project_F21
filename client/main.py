@@ -26,11 +26,12 @@ while True:
   print("Demographics> ", end = "") 
   userinput = input()
   flags = userinput.split()
-  if (flags[0] == "country"):
-    if len(flags) > 1:
-      countries.country(flags[1:], cnx)
-    else:
-      print("invalid input")
+  if len(flags) == 1: 
+    print('invalid input')
+  elif (flags[0] == "country"):
+    countries.country(flags[1:], cnx)
+  elif (flags[0] == "population"): 
+    population.operation(flags[1:], cnx)
   else:
     print('error')
 
