@@ -48,7 +48,7 @@ def get_population_by_options(cnx, options):
         return
 
     if 'year' in options: 
-        query += " AND year = " + options['year']
+        query += " AND year = " + options['year'] + " ORDER BY year DESC"
 
     print(query)
     try:
@@ -73,7 +73,7 @@ def get_population_in_range_by_options(cnx, options):
     elif 'country_name' in options: 
         query += " WHERE country_name = '" + options['country_name'] + "'"
 
-    query += " AND year > " + options['start_year'] + " AND year < " + options['end_year']
+    query += " AND year > " + options['start_year'] + " AND year < " + options['end_year'] + " ORDER BY year DESC"
 
     print(query)
     try:
@@ -129,13 +129,13 @@ def upsert_population(cnx, options):
         print('updating data')
         qry = "UPDATE population SET "
         for i in options: 
-            if i in ['code', 'name', 'year']: 
+            if i in ['code', 'name', 'year', 'gender']: 
                 continue
 
             qry += i + "=" + options[i] + ","
         # hacky way to get rid of last comma
         qry = qry[0:len(qry)-1]
-        qry += " WHERE country_code = '" + options['code'] + "'" + " AND country_name = '" + options['name'] + "'" + " AND year = " + options['year']
+        qry += " WHERE country_code = '" + options['code'] + "'" + " AND country_name = '" + options['name'] + "'" + " AND year = " + options['year'] + " AND gender = '" + options['gender'] + "'"
 
     try:
         cursor.execute(qry)
