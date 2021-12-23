@@ -7,7 +7,7 @@ This will load all relevant tables along with their data, primary keys, foreign 
 
 # Running the client app
 
-To run the client application, please type: 
+To run the client application, please type the following in the client directory: 
 ```
 python3 main.py <your_host> <your_db>
 ```
