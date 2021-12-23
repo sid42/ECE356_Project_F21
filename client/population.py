@@ -183,8 +183,14 @@ def delete_population(cnx, options):
         qry += " WHERE country_code = '" + options['code'] + "'"
     elif 'name' in options: 
         qry += " WHERE country_name = '" + options['name'] + "'"
+    else: 
+        print('invalid input')
+        return False
     
-    qry += " AND year = " + options['year'] + " AND gender = '" + options['gender'] + "'"
+    if 'year' in options: 
+        qry += " AND year = " + options['year']
+    if 'gender' in options: 
+        qry += " AND gender = '" + options['gender'] + "'"
 
     try:
         cursor.execute(qry)
