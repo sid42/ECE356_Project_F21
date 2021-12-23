@@ -3,9 +3,10 @@
 -- load countries data
 CREATE TABLE IF NOT EXISTS countries (
     code    CHAR(2),
-    name    VARCHAR(255), 
+    name    VARCHAR(255) UNIQUE, 
     area    DECIMAL(20,2),
-    PRIMARY KEY (code)
+    PRIMARY KEY (code), 
+    INDEX(name)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/22-Demographics/country_names_area.csv' 
@@ -34,7 +35,12 @@ CREATE TABLE IF NOT EXISTS population (
     population_between_71_80    INT, 
     population_between_81_90    INT, 
     population_between_91_100   INT,
-    PRIMARY KEY (country_code, year, gender) 
+    PRIMARY KEY (country_code, year, gender), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(gender), 
+    INDEX(total_midyear_population)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/population.csv' 
@@ -55,7 +61,11 @@ CREATE TABLE IF NOT EXISTS infant_mortality (
     infant_mortality            DECIMAL(20,2), 
     infant_mortality_male       DECIMAL(20,2), 
     infant_mortality_female     DECIMAL(20,2),
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(infant_mortality)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/infant_mortality.csv' 
@@ -83,7 +93,13 @@ CREATE TABLE IF NOT EXISTS fertility_rates (
     total_fertility_rate        DECIMAL(20,2), 
     gross_reproduction_rate     DECIMAL(20,2), 
     sex_ratio_at_birth          DECIMAL(20,2),
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(total_fertility_rate), 
+    INDEX(gross_reproduction_rate), 
+    INDEX(sex_ratio_at_birth) 
 ); 
 
 LOAD DATA INFILE '/var/lib/mysql-files/22-Demographics/age_specific_fertility_rates.csv' 
@@ -106,7 +122,12 @@ CREATE TABLE IF NOT EXISTS birth_death_rates (
     net_migration               DECIMAL(20,2), 
     rate_natural_increase       DECIMAL(20,2), 
     growth_rate                 DECIMAL(20,2), 
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(crude_birth_rate),
+    INDEX(crude_death_rate)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/22-Demographics/birth_death_growth_rates.csv' 
@@ -127,7 +148,11 @@ CREATE TABLE IF NOT EXISTS life_expectancy (
     life_expectancy             DECIMAL(20,2), 
     life_expectancy_male        DECIMAL(20,2), 
     life_expectancy_female      DECIMAL(20,2),
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(life_expectancy)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/life_expectancy.csv' 
@@ -147,7 +172,12 @@ CREATE TABLE IF NOT EXISTS gross_national_income_by_gender (
     year                        INT, 
     gender                      CHAR(1), 
     gni                         DECIMAL(20,2), 
-    PRIMARY KEY (country_code, year, gender)
+    PRIMARY KEY (country_code, year, gender), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(gender), 
+    INDEX(gni)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/gni.csv' 
@@ -166,7 +196,11 @@ CREATE TABLE IF NOT EXISTS human_development_index (
     country_name                VARCHAR(255), 
     year                        INT, 
     hdi                         DECIMAL(20,2), 
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(hdi)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/hdi.csv' 
@@ -187,7 +221,11 @@ CREATE TABLE IF NOT EXISTS gender_inequality_index (
     country_name                VARCHAR(255), 
     year                        INT, 
     gii                         DECIMAL(20,2), 
-    PRIMARY KEY (country_code, year)
+    PRIMARY KEY (country_code, year), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(gii)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/gie.csv' 
@@ -209,7 +247,12 @@ CREATE TABLE IF NOT EXISTS education (
     year                        INT,
     gender                      CHAR(1), 
     years_of_schooling          DECIMAL(20,2), 
-    PRIMARY KEY (country_code, year, gender)
+    PRIMARY KEY (country_code, year, gender), 
+    FOREIGN KEY (country_code) REFERENCES countries(code),
+    INDEX(country_name),
+    INDEX(year),
+    INDEX(gender), 
+    INDEX(years_of_schooling)
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/Group35/education.csv' 
@@ -219,5 +262,24 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (country_code, country_name, year, gender, @vyears_of_schooling)
 SET years_of_schooling = NULLIF(@vyears_of_schooling, '');
+
+-- ================================================================================
+
+
+-- ================================================================================
+
+-- Delete all values where year > 2021
+
+-- ================================================================================
+
+DELETE FROM population WHERE year > 2021; 
+DELETE FROM infant_mortality WHERE year > 2021; 
+DELETE FROM life_expectancy WHERE year > 2021; 
+DELETE FROM fertility_rates WHERE year > 2021; 
+DELETE FROM human_development_index WHERE year > 2021; 
+DELETE FROM gender_inequality_index WHERE year > 2021; 
+DELETE FROM gross_national_income_by_gender WHERE year > 2021; 
+DELETE FROM education WHERE year > 2021; 
+DELETE FROM birth_death_rates WHERE year > 2021; 
 
 -- ================================================================================
