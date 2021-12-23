@@ -5,12 +5,13 @@ import getpass
 from tabulate import tabulate
 import countries, education, lifeExpectancy, infantMortality, birthDeath, gni, hdi, gii, population, fertility_rates, help_guide
 import test
+import sys
 
 print ("Welcome to Group 35's Demographics App!")
 usr = input("Username: ")
 pwd = getpass.getpass()
-host = 'marmoset04.shoshin.uwaterloo.ca'
-db = f'db356_{usr}'
+host = sys.argv[2]
+db = sys.argv[3]
 global cnx 
 
 try:

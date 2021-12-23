@@ -1,5 +1,3 @@
-import os
-
 def help():
     print(
         '''
@@ -14,7 +12,22 @@ def help():
         E.g. : United States -> United_States, Saint Lucia -> Saint_Lucia
              : country get -name Virgin_Islands_U.S.
 
+        test
+            To test the functionality of the commands, type in 'test' followed by one of the following operations (eg. test population)
+            population 
+            gni 
+            hdi
+            infant_mortality
+            life_expectancy
+            education 
+            birth_death
+            gii 
+            fertility_rates
+            country 
+        
+
         country 
+            The following commands allow the user to query and update all the country information
             Attributes: code, name, area
             NOTE: PK for country: code
 
@@ -29,6 +42,7 @@ def help():
                 e.g. : country delete -code ZZ             
 
         education
+            The following commands allow the user to query and update all the education information by country, namely years of schooling
             Attributes: country_code, country_name, year, gender, years_of_schooling
             NOTE: PK for education: country_code, year, gender
 
@@ -43,17 +57,43 @@ def help():
                 e.g. : education delete -code  -year 2015 -gender M
 
         population
+            The following commands allow the user to query and update all the population information for a country
             Attributes: country_code, country_name, year, gender, total_midyear_population, population_between_0_10, population_between_11_20, population_between_21_30, population_between_31_40
             population_between_41_50, population_between_51_60, population_between_61_70, population_between_71_80, population_between_81_90, population_between_91_100
             NOTE: PK for population: country_code, year, gender
 
+            population all -> get all data in the population table
+            population get -<attribute> <value> ... -> get population value by attribute, must include either code or name 
+                eg. population get -code CA 
+                    population get -name Canada -year 2000 
+                    population get -name Canada -year 2000 -gender F
+            population get-range -<attribute> <value> ... -start_year <start_year_value> -end_year <end_year_value> -> get population for a specific range of years
+                eg. population get-range -code CA -start_year 2000 -end_year 2005
+                    population get-range -name Canada -gender F -start_year 2000 -end_year 2005
+            population add: (please look at test.py for example) -> add or insert population data, functions like an upsert, all PK values need to be specified in the command 
+                eg. population add -code CA -year  2000 -gender F -total_midyear_population 1000
+            population delete: delete population data by PKs
+                eg. population delete -code CA -year 2000 -gender F
 
         fertility_rates
+            The following commands allow the user to query and update all relevant information about fertility rates for a country
             Attributes: country_code, country_name, year, gender, total_fertility_rates, gross_reproduction_rate, sex_ratio_at_birth, fertility_rate_15_19, fertility_rate_20_24,
             fertility_rate_25_29, fertility_rate_30_34, fertility_rate_35_39, fertility_rate_40_44, fertility_rate_45_49
             NOTE: PK for fertility_rates: country_code, year
 
+            fertility_rates all -> get all data in the fertility table
+            fertility_rates get -<attribute> <value> ... -> get fertility value by attribute, must include either code or name 
+                eg. fertility_rates get -code CA 
+                    fertility_rates get -name Canada -year 2000 
+            fertility_rates get-range -<attribute> <value> ... -start_year <start_year_value> -end_year <end_year_value> -> get fertility_rates for a specific range of years
+                eg. fertility_rates get-range -code CA -start_year 2000 -end_year 2005
+            fertility_rates add: (please look at test.py for example) -> add or insert fertility_rates data, functions like an upsert, all PK values need to be specified in the command 
+                eg. fertility_rates add -code CA -year  2000 -total_fertility_rate 10
+            fertility_rates delete: delete fertility_rates data by PKs
+                eg. fertility_rates delete -code CA -year 2000 
+
         life_expectancy
+            The following commands allow the user to query and update all the relevant life expectancy details based on country
             Attributes: country_code, country_name, year, life_expectancy, life_expectancy_male, life_expectancy_female
             NOTE: PK for life_expectancy: country_code, year
 
@@ -68,6 +108,7 @@ def help():
                 e.g. : life_expectancy delete -code  -year 2015
 
         infant_mortality
+            The following commands allow the user to query and update all the infant mortality data of the country
             Attributes: country_code, country_name, year, gender, infant_mortality, infant_mortality_male, infant_mortality_female
             NOTE: PK for infant_mortality: country_code, year
 
@@ -82,6 +123,7 @@ def help():
                 e.g. : infant_mortality delete -code  -year 2015
 
         birth_death
+            The following commands allow the user to query and update all the relevant birth and death rate information of a country
             Attributes: country_code, country_name, year, crude_birth_rate, crude_death_rate, net_migration, rate_natural_increase, growth_rate
             NOTE: PK for birth_death: country_code, year
 
@@ -96,6 +138,7 @@ def help():
                 e.g. : birth_death delete -code ZZ -year 2015
 
         gni
+            The following commands allow the user to query and update all the gross national income data of the country
             Attributes: country_code, country_name, year, gender, gni
             NOTE: PK for gni: country_code, year, gender
 
@@ -110,6 +153,7 @@ def help():
                 e.g. : gni delete -code ZZ -year 2015 -gender M
         
         hdi
+            The following commands allow the user to query and update all the human development index of the country
             Attributes: country_code, country_name, year, hdi
             NOTE: PK for hdi: country_code, year
         
@@ -125,6 +169,7 @@ def help():
 
 
         gii
+            The following commands allow the user to query and update all the gender inequality index data of the country
             Attributes: country_code, country_name, year, gii
             NOTE: PK for gii: country_code, year
 
