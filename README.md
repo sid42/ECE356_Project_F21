@@ -47,9 +47,9 @@ To test the functionality of the commands, type in 'test' followed by one of the
 
 
 ### country 
-The following commands allow the user to query and update all the country information
-Attributes: code, name, area
-NOTE: PK for country: code
+The following commands allow the user to query and update all the country information<br />
+Attributes: code, name, area<br />
+NOTE: PK for country: code<br />
 
     country all -> To show all data present in the country table
     country get -<attribute> <value> ... -> To show specific information from country table by filtering on given attribute values
@@ -62,9 +62,9 @@ NOTE: PK for country: code
         e.g. : country delete -code ZZ             
 
 ### education
-The following commands allow the user to query and update all the education information by country, namely years of schooling
-Attributes: country_code, country_name, year, gender, years_of_schooling
-NOTE: PK for education: country_code, year, gender
+The following commands allow the user to query and update all the education information by country, namely years of schooling<br />
+Attributes: country_code, country_name, year, gender, years_of_schooling<br />
+NOTE: PK for education: country_code, year, gender<br />
 
     education all -> To show all data present in the education table
     education get -<attribute> <value> ... -> To show specific information from education table by filtering on given attribute values
@@ -77,10 +77,10 @@ NOTE: PK for education: country_code, year, gender
         e.g. : education delete -code  -year 2015 -gender M
 
 ### population
-The following commands allow the user to query and update all the population information for a country
+The following commands allow the user to query and update all the population information for a country<br />
 Attributes: country_code, country_name, year, gender, total_midyear_population, population_between_0_10, population_between_11_20, population_between_21_30, population_between_31_40
-population_between_41_50, population_between_51_60, population_between_61_70, population_between_71_80, population_between_81_90, population_between_91_100
-NOTE: PK for population: country_code, year, gender
+population_between_41_50, population_between_51_60, population_between_61_70, population_between_71_80, population_between_81_90, population_between_91_100<br />
+NOTE: PK for population: country_code, year, gender<br />
 
     population all -> get all data in the population table
     population get -<attribute> <value> ... -> get population value by attribute, must include either code or name 
@@ -96,10 +96,10 @@ NOTE: PK for population: country_code, year, gender
         eg. population delete -code CA -year 2000 -gender F
 
 ### fertility_rates
-The following commands allow the user to query and update all relevant information about fertility rates for a country
+The following commands allow the user to query and update all relevant information about fertility rates for a country<br />
 Attributes: country_code, country_name, year, gender, total_fertility_rates, gross_reproduction_rate, sex_ratio_at_birth, fertility_rate_15_19, fertility_rate_20_24,
-fertility_rate_25_29, fertility_rate_30_34, fertility_rate_35_39, fertility_rate_40_44, fertility_rate_45_49
-NOTE: PK for fertility_rates: country_code, year
+fertility_rate_25_29, fertility_rate_30_34, fertility_rate_35_39, fertility_rate_40_44, fertility_rate_45_49<br />
+NOTE: PK for fertility_rates: country_code, year<br />
 
     fertility_rates all -> get all data in the fertility table
     fertility_rates get -<attribute> <value> ... -> get fertility value by attribute, must include either code or name 
@@ -113,9 +113,9 @@ NOTE: PK for fertility_rates: country_code, year
         eg. fertility_rates delete -code CA -year 2000 
 
 ### life_expectancy
-The following commands allow the user to query and update all the relevant life expectancy details based on country
-Attributes: country_code, country_name, year, life_expectancy, life_expectancy_male, life_expectancy_female
-NOTE: PK for life_expectancy: country_code, year
+The following commands allow the user to query and update all the relevant life expectancy details based on country<br />
+Attributes: country_code, country_name, year, life_expectancy, life_expectancy_male, life_expectancy_female<br />
+NOTE: PK for life_expectancy: country_code, year<br />
 
     life_expectancy all -> To show all data present in the life_expectancy table
     life_expectancy get -<attribute> <value> ... -> To show specific information from life_expectancy table by filtering on given attribute values
@@ -128,9 +128,9 @@ NOTE: PK for life_expectancy: country_code, year
         e.g. : life_expectancy delete -code  -year 2015
 
 ### infant_mortality
-The following commands allow the user to query and update all the infant mortality data of the country
-Attributes: country_code, country_name, year, gender, infant_mortality, infant_mortality_male, infant_mortality_female
-NOTE: PK for infant_mortality: country_code, year
+The following commands allow the user to query and update all the infant mortality data of the country<br />
+Attributes: country_code, country_name, year, gender, infant_mortality, infant_mortality_male, infant_mortality_female<br />
+NOTE: PK for infant_mortality: country_code, year<br />
 
     infant_mortality all -> To show all data present in the infant_mortality table
     infant_mortality get -<attribute> <value> ... -> To show specific information from infant_mortality table by filtering on given attribute values
@@ -143,9 +143,9 @@ NOTE: PK for infant_mortality: country_code, year
         e.g. : infant_mortality delete -code  -year 2015
 
 ### birth_death
-The following commands allow the user to query and update all the relevant birth and death rate information of a country
-Attributes: country_code, country_name, year, crude_birth_rate, crude_death_rate, net_migration, rate_natural_increase, growth_rate
-NOTE: PK for birth_death: country_code, year
+The following commands allow the user to query and update all the relevant birth and death rate information of a country<br />
+Attributes: country_code, country_name, year, crude_birth_rate, crude_death_rate, net_migration, rate_natural_increase, growth_rate<br />
+NOTE: PK for birth_death: country_code, year<br />
 
     birth_death all -> To show all data present in the birth_death table
     birth_death get -<attribute> <value> ... -> To show specific information from birth_death table by filtering on given attribute values
@@ -158,9 +158,9 @@ NOTE: PK for birth_death: country_code, year
         e.g. : birth_death delete -code ZZ -year 2015
 
 ### gni
-The following commands allow the user to query and update all the gross national income data of the country
-Attributes: country_code, country_name, year, gender, gni
-NOTE: PK for gni: country_code, year, gender
+The following commands allow the user to query and update all the gross national income data of the country<br />
+Attributes: country_code, country_name, year, gender, gni<br />
+NOTE: PK for gni: country_code, year, gender<br />
 
     gni all -> To show all data present in the gni table
     gni get -<attribute> <value> ... -> To show specific information from gni table by filtering on given attribute values
@@ -173,9 +173,9 @@ NOTE: PK for gni: country_code, year, gender
         e.g. : gni delete -code ZZ -year 2015 -gender M
 
 ### hdi
-The following commands allow the user to query and update all the human development index of the country
-Attributes: country_code, country_name, year, hdi
-NOTE: PK for hdi: country_code, year
+The following commands allow the user to query and update all the human development index of the country<br />
+Attributes: country_code, country_name, year, hdi<br />
+NOTE: PK for hdi: country_code, year<br />
 
     hdi all -> To show all data present in the hdi table
     hdi get -<attribute> <value> ... -> To show specific information from hdi table by filtering on given attribute values
@@ -189,9 +189,9 @@ NOTE: PK for hdi: country_code, year
 
 
 ### gii
-The following commands allow the user to query and update all the gender inequality index data of the country
-Attributes: country_code, country_name, year, gii
-NOTE: PK for gii: country_code, year
+The following commands allow the user to query and update all the gender inequality index data of the country<br />
+Attributes: country_code, country_name, year, gii<br />
+NOTE: PK for gii: country_code, year<br />
 
     gii all -> To show all data present in the gii table
     gii get -<attribute> <value> ... -> To show specific information from gii table by filtering on given attribute values
