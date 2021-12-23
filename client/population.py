@@ -62,8 +62,33 @@ def get_population_by_options(cnx, options):
 
     cursor.close()
 
+# population get-range -country_code CA -start_year 2000 -end_year 2005
 def get_population_in_range_by_options(cnx, options): 
-    print()
+    cursor = cnx.cursor()
+    options = cmd_parser.parse(options)
+
+    query = "SELECT * FROM population"
+    if 'country_code' in options: 
+        query += " WHERE country_code = '" + options['country_code'] + "'"
+    elif 'country_name' in options: 
+        query += " WHERE country_name = '" + options['country_name'] + "'"
+    else: 
+        print('invalid input')
+        return
+
+    query += " AND year > " + options['start_date'] + " AND year < " + options['end_date']
+
+    print(query)
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+    result = cursor.fetchall()
+
+    print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
+
+    cursor.close()
 
 def upsert_population(cnx, options):
     print()
