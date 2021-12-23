@@ -25,11 +25,15 @@ def get_all_populations(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
+
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
-
     cursor.close()
+    return True
 
 # population get -country_code CA -year 2000
 # population get -country_name Canada -year 2000
@@ -48,19 +52,23 @@ def get_population_by_options(cnx, options):
         return
 
     if 'year' in options: 
-        query += " AND year = " + options['year'] + " ORDER BY year DESC"
+        query += " AND year = " + options['year'] 
+    if 'gender' in options: 
+        query += " AND gender = '" + options['gender'] + "'"
 
-    print(query)
+    query += " ORDER BY year DESC"
+
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
+
     result = cursor.fetchall()
-
     print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
-
     cursor.close()
+    return True
 
 # population get-range -country_code CA -start_year 2000 -end_year 2005
 def get_population_in_range_by_options(cnx, options): 
@@ -73,6 +81,9 @@ def get_population_in_range_by_options(cnx, options):
     elif 'name' in options: 
         query += " WHERE country_name = '" + options['name'] + "'"
 
+    if 'gender' in options: 
+        query += " AND gender = '" + options['gender'] + "'"
+
     query += " AND year > " + options['start_year'] + " AND year < " + options['end_year'] + " ORDER BY year DESC"
 
     print(query)
@@ -81,10 +92,10 @@ def get_population_in_range_by_options(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
+    
     result = cursor.fetchall()
-
     print(tabulate(result, headers=tables.populationColumns, tablefmt='pretty'))
-
     cursor.close()
 
 def upsert_population(cnx, options):
@@ -104,6 +115,7 @@ def upsert_population(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
     # check if we need to insert or update
     empty = len(result) == 0
@@ -143,10 +155,12 @@ def upsert_population(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
 
     print("data successfully added")
     cnx.commit()
     cursor.close()
+    return True
 
 def delete_population(cnx, options): 
     cursor = cnx.cursor()
@@ -165,9 +179,11 @@ def delete_population(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
 
     print("data successfully deleted")
     cnx.commit()
     cursor.close()
+    return True
 
 
