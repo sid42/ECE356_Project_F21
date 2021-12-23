@@ -4,6 +4,7 @@ import getpass
 from tabulate import tabulate
 import countries, education
 import population
+import fertility_rates
 
 print ("Welcome to Group 35's Demographics App!")
 usr = input("Username: ")
@@ -39,7 +40,7 @@ while True:
   elif (flags[0] == "population"): 
     population.operation(flags[1:], cnx)
   elif (flags[0] == "fertility_rates"): 
-    population.operation(flags[1:], cnx)
+    fertility_rates.operation(flags[1:], cnx)
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break

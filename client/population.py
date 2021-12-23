@@ -39,9 +39,9 @@ def get_population_by_options(cnx, options):
     options = cmd_parser.parse(options)
 
     query = "SELECT * FROM population"
-    if 'country_code' in options: 
+    if 'code' in options: 
         query += " WHERE country_code = '" + options['code'] + "'"
-    elif 'country_name' in options: 
+    elif 'name' in options: 
         query += " WHERE country_name = '" + options['name'] + "'"
     else: 
         print('invalid input')
@@ -68,9 +68,9 @@ def get_population_in_range_by_options(cnx, options):
     options = cmd_parser.parse(options)
 
     query = "SELECT * FROM population"
-    if 'country_code' in options: 
+    if 'code' in options: 
         query += " WHERE country_code = '" + options['code'] + "'"
-    elif 'country_name' in options: 
+    elif 'name' in options: 
         query += " WHERE country_name = '" + options['name'] + "'"
 
     query += " AND year > " + options['start_year'] + " AND year < " + options['end_year'] + " ORDER BY year DESC"
