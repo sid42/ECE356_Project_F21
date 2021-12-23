@@ -2,22 +2,23 @@ import mysql.connector
 from tabulate import tabulate
 import tables
 
-def education(options, cnx):
+def im(options, cnx):
     if (options[0] == "all"):
-        getAllEducation(cnx)
+        getAllIM(cnx)
     elif (options[0] == "insert"):
-        insertCountryEducation(cnx, options[1:])
+        insertCountryIM(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryEducation(cnx, options[1:])
+        deleteCountryIM(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryEducation(cnx, options[1:])
-    elif options[0] == "get":
-        getCountryEducation(cnx, options[1:])
+        updateCountryIM(cnx, options[1:])
+    elif (options[0] == "get"):
+        getCountryIM(cnx, options[1:])
 
-def getAllEducation(cnx):
+
+def getAllIM(cnx):
     cursor = cnx.cursor()
 
-    query = "SELECT * FROM education"
+    query = "SELECT * FROM infant_mortality"
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
@@ -25,18 +26,18 @@ def getAllEducation(cnx):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.infantMortalityColumns, tablefmt='pretty'))
 
     cursor.close()
 
-def getCountryEducation(cnx, options):
+def getCountryIM(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) < 2 or len(options) > 10 :
-        print("Not enough or too many arguements for an insert operation. Please check your command and try again")
+    if len(options) < 2 or len(options) > 12 :
+        print("Not enough or too many arguements for a get operation. Please check your command and try again")
         return
 
-    query_start = "SELECT * FROM education WHERE "
+    query_start = "SELECT * FROM infant_mortality WHERE "
     substring = []
     for i in range(0, len(options), 2):
         if options[i][1:] == "name":
@@ -46,7 +47,6 @@ def getCountryEducation(cnx, options):
         else:
             substring.append(options[i][1:] + " = '" + str(options[i+1]) + "'")
         
-    
     if len(substring) == 1:
         query = query_start + substring[0]
     else:
@@ -63,20 +63,19 @@ def getCountryEducation(cnx, options):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.infantMortalityColumns, tablefmt='pretty'))
 
     cursor.close()
 
-
-def insertCountryEducation(cnx, options):
+def insertCountryIM(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) != 5:
+    if len(options) != 6:
         print("Not enough or too many arguements for an insert operation. Please check your command and try again")
         return
 
-    query = "INSERT INTO education(country_code, country_name, year, gender, years_of_schooling) \
-        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(options[0], options[1], options[2], options[3], options[4])
+    query = "INSERT INTO infant_mortality(country_code, country_name, year, infant_mortality, infant_mortality_male, infant_mortality_female) \
+        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(options[0], options[1], options[2], options[3], options[4], options[5])
     try:
         cursor.execute(query)
         print("Insertion query executed successfully")
@@ -87,24 +86,23 @@ def insertCountryEducation(cnx, options):
     cnx.commit()
     cursor.close()
 
-
-def updateCountryEducation(cnx, options):
+def updateCountryIM(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) < 6 or len(options) > 10:
+    if len(options) < 6 or len(options) > 12:
         print("Not enough or too many arguements for an update operation. Please check your command and try again")
         return
 
-    query_start = "UPDATE education SET "
+    query_start = "UPDATE infant_mortality SET "
     pre_substring = []
-    for i in range(6, len(options), 2):
+    for i in range(4, len(options), 2):
         if options[i][1:] == "name":
             pre_substring.append("country_name" + " = '" + str(options[i+1]) + "'")
         else:
             pre_substring.append(str(options[i][1:]) + " = '" + str(options[i+1]) + "'")
     
     post_substring = []
-    for i in range(0, 6, 2):
+    for i in range(0, 4, 2):
         if options[i][1:] == "code":
             post_substring.append("country_code" + " = '" + str(options[i+1]) + "'")
         else:
@@ -137,14 +135,14 @@ def updateCountryEducation(cnx, options):
     cnx.commit()
     cursor.close()
 
-def deleteCountryEducation(cnx, options):
+def deleteCountryIM(cnx, options):
     cursor = cnx.cursor()
 
-    if len(options) != 6:
+    if len(options) != 4:
         print("Not enough arguements for an delete operation. Please check your command and try again")
         return
 
-    query_start = "DELETE FROM education WHERE "
+    query_start = "DELETE FROM infant_mortality WHERE "
     
     substring = []
     for i in range(0, len(options), 2):

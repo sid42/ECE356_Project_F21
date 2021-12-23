@@ -2,7 +2,7 @@ import os
 import mysql.connector
 import getpass
 from tabulate import tabulate
-import countries, education
+import countries, education, lifeExpectancy, infantMortality, birthDeath
 import population
 
 print ("Welcome to Group 35's Demographics App!")
@@ -38,6 +38,12 @@ while True:
     education.education(flags[1:], cnx)
   elif (flags[0] == "population"): 
     population.operation(flags[1:], cnx)
+  elif (flags[0] == "lifeexpectancy"): 
+    lifeExpectancy.le(flags[1:], cnx)
+  elif (flags[0] == "infantmortality"): 
+    infantMortality.im(flags[1:], cnx)
+  elif (flags[0] == "birthdeath"): 
+    birthDeath.bd(flags[1:], cnx)
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break
