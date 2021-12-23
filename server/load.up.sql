@@ -175,7 +175,6 @@ CREATE TABLE IF NOT EXISTS gross_national_income_by_gender (
     FOREIGN KEY (country_code) REFERENCES countries(code),
     INDEX(country_name),
     INDEX(year),
-    INDEX(gender), 
     INDEX(gni)
 );
 
@@ -250,7 +249,6 @@ CREATE TABLE IF NOT EXISTS education (
     FOREIGN KEY (country_code) REFERENCES countries(code),
     INDEX(country_name),
     INDEX(year),
-    INDEX(gender), 
     INDEX(years_of_schooling)
 );
 
