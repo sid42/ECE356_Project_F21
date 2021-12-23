@@ -1,4 +1,5 @@
 import os
+from mysql.connector import errorcode
 import mysql.connector
 import getpass
 from tabulate import tabulate
