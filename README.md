@@ -30,7 +30,7 @@ NOTE: For all commands below, use "_" in place of " " when providing a value for
 E.g. : United States -> United_States, Saint Lucia -> Saint_Lucia
         : country get -name Virgin_Islands_U.S.
 
-test
+### test
 
 To test the functionality of the commands, type in 'test' followed by one of the following operations (eg. test population)
 population 
@@ -45,7 +45,7 @@ fertility_rates
 country 
 
 
-country 
+### country 
 The following commands allow the user to query and update all the country information
 Attributes: code, name, area
 NOTE: PK for country: code
@@ -60,10 +60,10 @@ NOTE: PK for country: code
     country delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : country delete -code ZZ             
 
-education
-    The following commands allow the user to query and update all the education information by country, namely years of schooling
-    Attributes: country_code, country_name, year, gender, years_of_schooling
-    NOTE: PK for education: country_code, year, gender
+### education
+The following commands allow the user to query and update all the education information by country, namely years of schooling
+Attributes: country_code, country_name, year, gender, years_of_schooling
+NOTE: PK for education: country_code, year, gender
 
     education all -> To show all data present in the education table
     education get -<attribute> <value> ... -> To show specific information from education table by filtering on given attribute values
@@ -75,11 +75,11 @@ education
     education delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : education delete -code  -year 2015 -gender M
 
-population
-    The following commands allow the user to query and update all the population information for a country
-    Attributes: country_code, country_name, year, gender, total_midyear_population, population_between_0_10, population_between_11_20, population_between_21_30, population_between_31_40
-    population_between_41_50, population_between_51_60, population_between_61_70, population_between_71_80, population_between_81_90, population_between_91_100
-    NOTE: PK for population: country_code, year, gender
+### population
+The following commands allow the user to query and update all the population information for a country
+Attributes: country_code, country_name, year, gender, total_midyear_population, population_between_0_10, population_between_11_20, population_between_21_30, population_between_31_40
+population_between_41_50, population_between_51_60, population_between_61_70, population_between_71_80, population_between_81_90, population_between_91_100
+NOTE: PK for population: country_code, year, gender
 
     population all -> get all data in the population table
     population get -<attribute> <value> ... -> get population value by attribute, must include either code or name 
@@ -94,11 +94,11 @@ population
     population delete: delete population data by PKs
         eg. population delete -code CA -year 2000 -gender F
 
-fertility_rates
-    The following commands allow the user to query and update all relevant information about fertility rates for a country
-    Attributes: country_code, country_name, year, gender, total_fertility_rates, gross_reproduction_rate, sex_ratio_at_birth, fertility_rate_15_19, fertility_rate_20_24,
-    fertility_rate_25_29, fertility_rate_30_34, fertility_rate_35_39, fertility_rate_40_44, fertility_rate_45_49
-    NOTE: PK for fertility_rates: country_code, year
+### fertility_rates
+The following commands allow the user to query and update all relevant information about fertility rates for a country
+Attributes: country_code, country_name, year, gender, total_fertility_rates, gross_reproduction_rate, sex_ratio_at_birth, fertility_rate_15_19, fertility_rate_20_24,
+fertility_rate_25_29, fertility_rate_30_34, fertility_rate_35_39, fertility_rate_40_44, fertility_rate_45_49
+NOTE: PK for fertility_rates: country_code, year
 
     fertility_rates all -> get all data in the fertility table
     fertility_rates get -<attribute> <value> ... -> get fertility value by attribute, must include either code or name 
@@ -111,10 +111,10 @@ fertility_rates
     fertility_rates delete: delete fertility_rates data by PKs
         eg. fertility_rates delete -code CA -year 2000 
 
-life_expectancy
-    The following commands allow the user to query and update all the relevant life expectancy details based on country
-    Attributes: country_code, country_name, year, life_expectancy, life_expectancy_male, life_expectancy_female
-    NOTE: PK for life_expectancy: country_code, year
+### life_expectancy
+The following commands allow the user to query and update all the relevant life expectancy details based on country
+Attributes: country_code, country_name, year, life_expectancy, life_expectancy_male, life_expectancy_female
+NOTE: PK for life_expectancy: country_code, year
 
     life_expectancy all -> To show all data present in the life_expectancy table
     life_expectancy get -<attribute> <value> ... -> To show specific information from life_expectancy table by filtering on given attribute values
@@ -126,10 +126,10 @@ life_expectancy
     life_expectancy delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : life_expectancy delete -code  -year 2015
 
-infant_mortality
-    The following commands allow the user to query and update all the infant mortality data of the country
-    Attributes: country_code, country_name, year, gender, infant_mortality, infant_mortality_male, infant_mortality_female
-    NOTE: PK for infant_mortality: country_code, year
+### infant_mortality
+The following commands allow the user to query and update all the infant mortality data of the country
+Attributes: country_code, country_name, year, gender, infant_mortality, infant_mortality_male, infant_mortality_female
+NOTE: PK for infant_mortality: country_code, year
 
     infant_mortality all -> To show all data present in the infant_mortality table
     infant_mortality get -<attribute> <value> ... -> To show specific information from infant_mortality table by filtering on given attribute values
@@ -141,10 +141,10 @@ infant_mortality
     infant_mortality delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : infant_mortality delete -code  -year 2015
 
-birth_death
-    The following commands allow the user to query and update all the relevant birth and death rate information of a country
-    Attributes: country_code, country_name, year, crude_birth_rate, crude_death_rate, net_migration, rate_natural_increase, growth_rate
-    NOTE: PK for birth_death: country_code, year
+### birth_death
+The following commands allow the user to query and update all the relevant birth and death rate information of a country
+Attributes: country_code, country_name, year, crude_birth_rate, crude_death_rate, net_migration, rate_natural_increase, growth_rate
+NOTE: PK for birth_death: country_code, year
 
     birth_death all -> To show all data present in the birth_death table
     birth_death get -<attribute> <value> ... -> To show specific information from birth_death table by filtering on given attribute values
@@ -156,10 +156,10 @@ birth_death
     birth_death delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : birth_death delete -code ZZ -year 2015
 
-gni
-    The following commands allow the user to query and update all the gross national income data of the country
-    Attributes: country_code, country_name, year, gender, gni
-    NOTE: PK for gni: country_code, year, gender
+### gni
+The following commands allow the user to query and update all the gross national income data of the country
+Attributes: country_code, country_name, year, gender, gni
+NOTE: PK for gni: country_code, year, gender
 
     gni all -> To show all data present in the gni table
     gni get -<attribute> <value> ... -> To show specific information from gni table by filtering on given attribute values
@@ -171,10 +171,10 @@ gni
     gni delete -<attribute> <value> ... -> To delete a row in the table using the values specified identified by Primary Key
         e.g. : gni delete -code ZZ -year 2015 -gender M
 
-hdi
-    The following commands allow the user to query and update all the human development index of the country
-    Attributes: country_code, country_name, year, hdi
-    NOTE: PK for hdi: country_code, year
+### hdi
+The following commands allow the user to query and update all the human development index of the country
+Attributes: country_code, country_name, year, hdi
+NOTE: PK for hdi: country_code, year
 
     hdi all -> To show all data present in the hdi table
     hdi get -<attribute> <value> ... -> To show specific information from hdi table by filtering on given attribute values
@@ -187,10 +187,10 @@ hdi
         e.g. : hdi delete -code ZZ -year 2015 
 
 
-gii
-    The following commands allow the user to query and update all the gender inequality index data of the country
-    Attributes: country_code, country_name, year, gii
-    NOTE: PK for gii: country_code, year
+### gii
+The following commands allow the user to query and update all the gender inequality index data of the country
+Attributes: country_code, country_name, year, gii
+NOTE: PK for gii: country_code, year
 
     gii all -> To show all data present in the gii table
     gii get -<attribute> <value> ... -> To show specific information from gii table by filtering on given attribute values
@@ -200,5 +200,5 @@ gii
     gii update -<attribute> <value> ... -> To update the attributes of a specific row identified by Primary Key
         e.g. : gii update -code ZZ -year 2015 -gii 0.43
     
-exit
-    To exit/quit the final command line interface 
+### exit
+To exit/quit the final command line interface 
