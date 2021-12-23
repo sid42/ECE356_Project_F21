@@ -2,22 +2,22 @@ import mysql.connector
 from tabulate import tabulate
 import tables
 
-def education(options, cnx):
+def gni(options, cnx):
     if (options[0] == "all"):
-        getAllEducation(cnx)
+        getAllGNI(cnx)
     elif (options[0] == "insert"):
-        insertCountryEducation(cnx, options[1:])
+        insertCountryGNI(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryEducation(cnx, options[1:])
+        deleteCountryGNI(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryEducation(cnx, options[1:])
+        updateCountryGNI(cnx, options[1:])
     elif options[0] == "get":
-        getCountryEducation(cnx, options[1:])
+        getCountryGNI(cnx, options[1:])
 
-def getAllEducation(cnx):
+def getAllGNI(cnx):
     cursor = cnx.cursor()
 
-    query = "SELECT * FROM education"
+    query = "SELECT * FROM gross_national_income_by_gender"
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
@@ -25,18 +25,18 @@ def getAllEducation(cnx):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.GNIColumns, tablefmt='pretty'))
 
     cursor.close()
 
-def getCountryEducation(cnx, options):
+def getCountryGNI(cnx, options):
     cursor = cnx.cursor()
 
     if len(options) < 2 or len(options) > 10 :
         print("Not enough or too many arguements for a get operation. Please check your command and try again")
         return
 
-    query_start = "SELECT * FROM education WHERE "
+    query_start = "SELECT * FROM gross_national_income_by_gender WHERE "
     substring = []
     for i in range(0, len(options), 2):
         if options[i][1:] == "name":
@@ -63,19 +63,19 @@ def getCountryEducation(cnx, options):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
+    print(tabulate(result, headers=tables.GNIColumns, tablefmt='pretty'))
 
     cursor.close()
 
 
-def insertCountryEducation(cnx, options):
+def insertCountryGNI(cnx, options):
     cursor = cnx.cursor()
 
     if len(options) != 5:
         print("Not enough or too many arguements for an insert operation. Please check your command and try again")
         return
 
-    query = "INSERT INTO education(country_code, country_name, year, gender, years_of_schooling) \
+    query = "INSERT INTO gross_national_income_by_gender(country_code, country_name, year, gender, gni) \
         VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(options[0], options[1], options[2], options[3], options[4])
     try:
         cursor.execute(query)
@@ -88,14 +88,14 @@ def insertCountryEducation(cnx, options):
     cursor.close()
 
 
-def updateCountryEducation(cnx, options):
+def updateCountryGNI(cnx, options):
     cursor = cnx.cursor()
 
     if len(options) < 6 or len(options) > 10:
         print("Not enough or too many arguements for an update operation. Please check your command and try again")
         return
 
-    query_start = "UPDATE education SET "
+    query_start = "UPDATE gross_national_income_by_gender SET "
     pre_substring = []
     for i in range(6, len(options), 2):
         if options[i][1:] == "name":
@@ -137,14 +137,14 @@ def updateCountryEducation(cnx, options):
     cnx.commit()
     cursor.close()
 
-def deleteCountryEducation(cnx, options):
+def deleteCountryGNI(cnx, options):
     cursor = cnx.cursor()
 
     if len(options) != 6:
         print("Not enough arguements for an delete operation. Please check your command and try again")
         return
 
-    query_start = "DELETE FROM education WHERE "
+    query_start = "DELETE FROM gross_national_income_by_gender WHERE "
     
     substring = []
     for i in range(0, len(options), 2):
@@ -173,3 +173,4 @@ def deleteCountryEducation(cnx, options):
 
     cnx.commit()
     cursor.close()
+

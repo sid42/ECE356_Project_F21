@@ -1,5 +1,6 @@
 import mysql.connector
 from tabulate import tabulate
+import tables
 
 def country(options, cnx):
     if (options[0] == "all"):
@@ -27,7 +28,7 @@ def getAllCountries(cnx):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
+    print(tabulate(result, headers=tables.countriesColumns, tablefmt='pretty'))
 
     cursor.close()
 
@@ -50,7 +51,7 @@ def getCountry(cnx, options):
         print("Could not query, please check your command and try again or use help")
     result = cursor.fetchall()
 
-    print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
+    print(tabulate(result, headers=tables.countriesColumns, tablefmt='pretty'))
 
     cursor.close()
 
