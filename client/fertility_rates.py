@@ -5,18 +5,18 @@ from tabulate import tabulate
 
 def operation(options, cnx):
     if (options[0] == "all"):
-        get_all_feritility_rates(cnx)
+        return get_all_fertility_rates(cnx)
     elif (options[0] == "get"):
-        get_feritility_rates_by_options(cnx, options[1:])
+        return get_fertility_rates_by_options(cnx, options[1:])
     elif (options[0] == "get-range"):
-        get_ferility_rates_in_range_by_options(cnx, options[1:])
+        return get_fertility_rates_in_range_by_options(cnx, options[1:])
     elif (options[0] == "add"):
-        upsert_ferility_rates(cnx, options[1:])
+        return upsert_fertility_rates(cnx, options[1:])
     elif (options[0] == "delete"):
-        delete_ferility_rates(cnx, options[1:])
+        return delete_fertility_rates(cnx, options[1:])
 
 
-def get_all_feritility_rates(cnx): 
+def get_all_fertility_rates(cnx): 
     cursor = cnx.cursor()
 
     query = "SELECT * FROM fertility_rates"
@@ -25,13 +25,17 @@ def get_all_feritility_rates(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.fertilityRatesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
-def get_feritility_rates_by_options(cnx, options): 
+def get_fertility_rates_by_options(cnx, options): 
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
 
@@ -47,19 +51,22 @@ def get_feritility_rates_by_options(cnx, options):
     if 'year' in options: 
         query += " AND year = " + options['year'] + " ORDER BY year DESC"
 
-    print(query)
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.fertilityRatesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
-def get_ferility_rates_in_range_by_options(cnx, options): 
+def get_fertility_rates_in_range_by_options(cnx, options): 
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
 
@@ -71,19 +78,22 @@ def get_ferility_rates_in_range_by_options(cnx, options):
 
     query += " AND year > " + options['start_year'] + " AND year < " + options['end_year'] + " ORDER BY year DESC"
 
-    print(query)
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.fertilityRatesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
-def upsert_ferility_rates(cnx, options):
+def upsert_fertility_rates(cnx, options):
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
 
@@ -100,7 +110,10 @@ def upsert_ferility_rates(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
     empty = len(result) == 0
 
     qry = ""
@@ -138,12 +151,14 @@ def upsert_ferility_rates(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
 
     print("data successfully added")
     cnx.commit()
     cursor.close()
+    return True
 
-def delete_ferility_rates(cnx, options): 
+def delete_fertility_rates(cnx, options): 
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
 
@@ -160,9 +175,11 @@ def delete_ferility_rates(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
 
     print("data successfully deleted")
     cnx.commit()
     cursor.close()
+    return True
 
 

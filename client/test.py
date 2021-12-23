@@ -1,4 +1,4 @@
-import population, birthDeath, infantMortality, lifeExpectancy, education, gni, hdi, gii, countries
+import population, birthDeath, infantMortality, lifeExpectancy, education, gni, hdi, gii, countries, fertility_rates
 
 def population_tests(cnx):
     total_population_tests = 11
@@ -595,6 +595,7 @@ def gii_tests(cnx):
     print(str(tests_passed) + "/" + str(total_gii_tests) + " gii tests passed")
 
 def country_tests(cnx):
+
     total_country_tests = 8
     tests_passed = 0
 
@@ -665,6 +666,73 @@ def country_tests(cnx):
 
     print(str(tests_passed) + "/" + str(total_country_tests) + " country tests passed")
 
+def fertility_rates_tests(cnx):
+    total_fertility_rates_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: fertility_rates get
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the fertility_rates tables
+    test_cmd = "fertility_rates all"
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 2 : Query fertility_rates data for Canada by country code
+    # We know that the dataset contains fertility_rates information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "fertility_rates get -code CA" 
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query fertility_rates data for United States by country name, year and gender
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "fertility_rates get -name United_States -year 2014" 
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query fertility_rates for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "fertility_rates get -name University_of_Waterloo"
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: fertility_rates get-range
+    # ----------------------------------------------------------------------
+    # Test 5 : Query fertility_rates data for a given range of years
+    # The data for Canada exists in the table, so we expect this to be true
+    test_cmd = "fertility_rates get-range -name Canada -start_year 2000 -end_year 2005" 
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : Query fertility_rates data for range of years that don't exist
+    # There is no data for Canada's fertility_rates between the years 2030 and 2040, so we should expect a False return from the operation
+    test_cmd = "fertility_rates get-range -name Canada -start_year 2030 -end_year 2040" 
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: fertility_rates add
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the fertility_rate_15_19 for Canada in the year 2000 
+    # The operation returns True if the update was successful
+    test_cmd = "fertility_rates add -code CA -name Canada -year 2000 -fertility_rate_15_19 100"
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: fertility_rates delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 8 
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "fertility_rates delete -name Canada -year 2030"
+    if fertility_rates.operation(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_fertility_rates_tests) + " fertility_rates tests passed")
+
 def run_tests(cnx, suite):
     if suite == "population": 
         population_tests(cnx)
@@ -684,4 +752,8 @@ def run_tests(cnx, suite):
         gii_tests(cnx)
     elif suite == "country":
         country_tests(cnx)
+    elif suite == "fertility_rates":
+        fertility_rates_tests(cnx)
+    else:
+        print("Incorrect use of the test command.")
 
