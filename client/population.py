@@ -38,18 +38,19 @@ def get_population_by_options(cnx, options):
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
 
-    query = "SELECT * FROM population".format(name)
+    query = "SELECT * FROM population"
     if 'country_code' in options: 
-        query += "WHERE country_code = '" + options['country_code'] + "'"
+        query += " WHERE country_code = '" + options['country_code'] + "'"
     elif 'country_name' in options: 
-        query += "WHERE country_code = '" + options['country_name'] + "'"
+        query += " WHERE country_name = '" + options['country_name'] + "'"
     else: 
         print('invalid input')
         return
 
     if 'year' in options: 
-        query += "AND WHERE year = " + options['year']
+        query += " AND year = " + options['year']
 
+    print(query)
     try:
         cursor.execute(query)
     except mysql.connector.Error as err:
