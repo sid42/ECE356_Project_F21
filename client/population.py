@@ -72,9 +72,6 @@ def get_population_in_range_by_options(cnx, options):
         query += " WHERE country_code = '" + options['country_code'] + "'"
     elif 'country_name' in options: 
         query += " WHERE country_name = '" + options['country_name'] + "'"
-    else: 
-        print('invalid input')
-        return
 
     query += " AND year > " + options['start_year'] + " AND year < " + options['end_year']
 
@@ -96,29 +93,24 @@ def upsert_population(cnx, options):
     empty = False
 
     pre_query = "SELECT * FROM population"
-    if 'country_code' in options: 
-        pre_query += " WHERE country_code = '" + options['country_code'] + "'"
-    elif 'country_name' in options: 
-        pre_query += " WHERE country_name = '" + options['country_name'] + "'"
-    else: 
-        print('invalid input')
-        return
-
+    if 'code' in options: 
+        pre_query += " WHERE country_code = '" + options['code'] + "'"
+    elif 'name' in options: 
+        pre_query += " WHERE country_name = '" + options['name'] + "'"
+    
     pre_query += " AND year = " + options['year']
 
-    print(pre_query)
     try:
         cursor.execute(pre_query)
-    except mysql.connector.Error.InterfaceError as err: 
-        empty = True
-        pass
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
-    
+    result = cursor.fetchall()
+    empty = len(result) == 0
+
     qry = ""
     if empty: 
-        # insert
+        print('will insert')
         if len(options) != len(tables.populationColumns):
             print('Invalid number of arguments, try again')
             return
@@ -130,37 +122,21 @@ def upsert_population(cnx, options):
             else: 
                 qry += table + ')'
         
-        qry += "VALUES(" +
-                options['code'] + ',' +
-                options['name'] + ',' + 
-                options['year'] + ',' + 
-                options['gender'] + ',' + 
-                options['total_midyear_population'] + ',' + 
-                options['population_between_0_10'] + ',' + 
-                options['population_between_11_20'] + ',' + 
-                options['population_between_21_30'] + ',' + 
-                options['population_between_31_40'] + ',' + 
-                options['population_between_41_50'] + ',' + 
-                options['population_between_51_60'] + ',' + 
-                options['population_between_61_70'] + ',' + 
-                options['population_between_71_80'] + ',' + 
-                options['population_between_81_90'] + ',' + 
-                options['population_between_91_100'] + ')' 
+        qry += "VALUES('" + options['code'] + "','" + options['name'] + "'," + options['year'] + ",'" + options['gender'] + "'," + options['total_midyear_population'] + "," + options['population_between_0_10'] + "," + options['population_between_11_20'] + "," + options['population_between_21_30'] + "," + options['population_between_31_40'] + "," + options['population_between_41_50'] + "," + options['population_between_51_60'] + "," + options['population_between_61_70'] + "," + options['population_between_71_80'] + "," + options['population_between_81_90'] + "," + options['population_between_91_100'] + ")" 
                 
                  
     else: 
         # update
+        print('will update')
         qry = "UPDATE population SET "
         for i in options: 
             if i in ['code', 'name', 'year']: 
                 continue
 
-            qry += i + "=" + options[i] ","
+            qry += i + "=" + options[i] + ","
         # hacky way to get rid of last comma
         qry = qry[0:len(qry)-1]
-        qry += " WHERE country_code = '" + options['code'] + "'" +
-                " AND country_name = '" + options['name'] + "'" + 
-                " AND year = " + options['year']
+        qry += " WHERE country_code = '" + options['code'] + "'" + " AND country_name = '" + options['name'] + "'" + " AND year = " + options['year']
 
     try:
         cursor.execute(qry)
@@ -168,9 +144,10 @@ def upsert_population(cnx, options):
         print(err) 
         print("Could not query, please check your command and try again or use help")
 
-    print("successfully added data")
+    print(qry)
     cnx.commit()
     cursor.close()
 
 def delete_population(cnx, options): 
     print()
+
