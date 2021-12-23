@@ -91,7 +91,86 @@ def get_population_in_range_by_options(cnx, options):
     cursor.close()
 
 def upsert_population(cnx, options):
-    print()
+    cursor = cnx.cursor()
+    options = cmd_parser.parse(options)
+    empty = False
+
+    pre_query = "SELECT * FROM population"
+    if 'country_code' in options: 
+        pre_query += " WHERE country_code = '" + options['country_code'] + "'"
+    elif 'country_name' in options: 
+        pre_query += " WHERE country_name = '" + options['country_name'] + "'"
+    else: 
+        print('invalid input')
+        return
+
+    pre_query += " AND year = " + options['year']
+
+    print(pre_query)
+    try:
+        cursor.execute(pre_query)
+    except mysql.connector.Error.InterfaceError as err: 
+        empty = True
+        pass
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+    
+    qry = ""
+    if empty: 
+        # insert
+        if len(options) != len(tables.populationColumns):
+            print('Invalid number of arguments, try again')
+            return
+        
+        qry = "INSERT INTO population("
+        for i, table in enumerate(tables.populationColumns):
+            if i != len(tables.populationColumns) - 1: 
+                qry += table + ','
+            else: 
+                qry += table + ')'
+        
+        qry += "VALUES(" +
+                options['code'] + ',' +
+                options['name'] + ',' + 
+                options['year'] + ',' + 
+                options['gender'] + ',' + 
+                options['total_midyear_population'] + ',' + 
+                options['population_between_0_10'] + ',' + 
+                options['population_between_11_20'] + ',' + 
+                options['population_between_21_30'] + ',' + 
+                options['population_between_31_40'] + ',' + 
+                options['population_between_41_50'] + ',' + 
+                options['population_between_51_60'] + ',' + 
+                options['population_between_61_70'] + ',' + 
+                options['population_between_71_80'] + ',' + 
+                options['population_between_81_90'] + ',' + 
+                options['population_between_91_100'] + ')' 
+                
+                 
+    else: 
+        # update
+        qry = "UPDATE population SET "
+        for i in options: 
+            if i in ['code', 'name', 'year']: 
+                continue
+
+            qry += i + "=" + options[i] ","
+        # hacky way to get rid of last comma
+        qry = qry[0:len(qry)-1]
+        qry += " WHERE country_code = '" + options['code'] + "'" +
+                " AND country_name = '" + options['name'] + "'" + 
+                " AND year = " + options['year']
+
+    try:
+        cursor.execute(qry)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+
+    print("successfully added data")
+    cnx.commit()
+    cursor.close()
 
 def delete_population(cnx, options): 
     print()
