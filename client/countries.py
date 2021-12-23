@@ -2,50 +2,18 @@ import mysql.connector
 from tabulate import tabulate
 
 def country(options, cnx):
-    for i in range(len(options)): 
-        if (options[i] == "-code"):
-            getCountryByCode(cnx, options[1])
-        elif (options[i] == "-name"):
-            getCountryByName(cnx, options[1])
-        elif (options[i] == "-all"):
-            getAllCountries(cnx)
-        elif (options[i] == "-insert"):
-            insertCountry(cnx, options[1:])
-        elif (options[i] == "-delete"):
-            deleteCountry(cnx, options[1])
-        elif (options[i] == "-update"):
-            updateCountry(cnx, options[1:])
+    if (options[0] == "all"):
+        getAllCountries(cnx)
+    elif (options[0] == "insert"):
+        insertCountry(cnx, options[1:])
+    elif (options[0] == "delete"):
+        deleteCountry(cnx, options[2])
+    elif (options[0] == "update"):
+        updateCountry(cnx, options[1:])
+    elif (options[0] == "get"):
+        getCountry(cnx, options[1:])
 
 
-def getCountryByCode(cnx, code):  
-    cursor = cnx.cursor()
-
-    query = "SELECT * FROM countries WHERE code = '{}'".format(code)
-    try:
-        cursor.execute(query)
-    except mysql.connector.Error as err:
-        print(err) 
-        print("Could not query, please check your command and try again or use help")
-    result = cursor.fetchall()
-
-    print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
-
-    cursor.close()
-
-def getCountryByName(cnx, name):
-    cursor = cnx.cursor()
-
-    query = "SELECT * FROM countries WHERE name = '{}'".format(name)
-    try:
-        cursor.execute(query)
-    except mysql.connector.Error as err:
-        print(err) 
-        print("Could not query, please check your command and try again or use help")
-    result = cursor.fetchall()
-
-    print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
-
-    cursor.close()
 
 def getAllCountries(cnx):
     
@@ -62,6 +30,30 @@ def getAllCountries(cnx):
     print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
 
     cursor.close()
+
+def getCountry(cnx, options):
+    cursor = cnx.cursor()
+
+    if options[0] == "-code":
+        query_end = " WHERE code = '{}'".format(options[1])
+    elif (options[0] == "-name"):
+        query_end = " WHERE name = '{}'".format(options[1])
+    elif (options[0] == "all"):
+        query_end = ""
+    
+    query = "SELECT * FROM countries" + query_end
+
+    try:
+        cursor.execute(query)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+    result = cursor.fetchall()
+
+    print(tabulate(result, headers=['code', 'name', 'area'], tablefmt='pretty'))
+
+    cursor.close()
+
 
 def insertCountry(cnx, options):
     cursor = cnx.cursor()
@@ -94,12 +86,15 @@ def deleteCountry(cnx, code):
 def updateCountry(cnx, options):
     cursor = cnx.cursor()
 
-    code = options.pop(0)
+    if len(options) < 4 or len(options) > 6:
+        print("Not enough or too many arguements for an update operation. Please check your command and try again")
+        return
+
     query_start = "UPDATE countries SET "
-    query_end = " WHERE code = '{0}'".format(code)
+    query_end = " WHERE code = '{0}'".format(options[1])
     substring = []
-    for i in range(0, len(options), 2):
-        substring.append(str(options[i][2:]) + " = '" + str(options[i+1]) + "'")
+    for i in range(2, len(options), 2):
+        substring.append(str(options[i][1:]) + " = '" + str(options[i+1]) + "'")
     
 
     if len(substring) == 1:
