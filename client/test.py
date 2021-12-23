@@ -1,4 +1,4 @@
-import population, birthDeath, infantMortality, lifeExpectancy
+import population, birthDeath, infantMortality, lifeExpectancy, education
 
 def population_tests(cnx):
     total_population_tests = 11
@@ -306,6 +306,78 @@ def life_expectancy_tests(cnx):
 
     print(str(tests_passed) + "/" + str(total_life_expectancy_tests) + " life_expectancy tests passed")
 
+def education_tests(cnx):
+    total_education_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: education all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the education table
+    test_cmd = "education all"
+    if education.education(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: education get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query education data for Canada by country code
+    # We know that the dataset contains education information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "education get -code CA" 
+    if education.education(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query education data for United States by country name, year 
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "education get -name United_States -year 2014" 
+    if education.education(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query education for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "education get -name University_of_Waterloo"
+    if education.education(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: education insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert education data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "education insert CA Canada 2030 M 30"
+    if education.education(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the education data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "education get -code CA -year 2030"
+    if education.education(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: education update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the education for Canada in the year 2030 
+    # In this case, it would be the education value
+    # The operation returns True if the update was successful
+    test_cmd = "education update -code CA -year 2030 -gender M -years_of_schooling 0.7"
+    if education.education(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: education delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "education delete -code CA -year 2030 -gender M"
+    if education.education(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_education_tests) + " education tests passed")
+
 def run_tests(cnx, suite):
     if suite == "population": 
         population_tests(cnx)
@@ -315,4 +387,6 @@ def run_tests(cnx, suite):
         infant_mortality_tests(cnx)
     elif suite == "life_expectancy":
         life_expectancy_tests(cnx)
+    elif suite == "education":
+        education_tests(cnx)
 

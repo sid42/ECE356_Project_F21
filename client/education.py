@@ -8,15 +8,15 @@ def education(options, cnx):
             options[i] = options[i].replace("_", " ")
 
     if (options[0] == "all"):
-        getAllEducation(cnx)
+        return getAllEducation(cnx)
     elif (options[0] == "insert"):
-        insertCountryEducation(cnx, options[1:])
+        return insertCountryEducation(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryEducation(cnx, options[1:])
+        return deleteCountryEducation(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryEducation(cnx, options[1:])
+        return updateCountryEducation(cnx, options[1:])
     elif options[0] == "get":
-        getCountryEducation(cnx, options[1:])
+        return getCountryEducation(cnx, options[1:])
 
 def getAllEducation(cnx):
     cursor = cnx.cursor()
@@ -27,11 +27,15 @@ def getAllEducation(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryEducation(cnx, options):
     cursor = cnx.cursor()
@@ -65,11 +69,15 @@ def getCountryEducation(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.educationColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 
 def insertCountryEducation(cnx, options):
@@ -87,9 +95,11 @@ def insertCountryEducation(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 
 def updateCountryEducation(cnx, options):
@@ -137,9 +147,11 @@ def updateCountryEducation(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryEducation(cnx, options):
     cursor = cnx.cursor()
@@ -174,6 +186,8 @@ def deleteCountryEducation(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
