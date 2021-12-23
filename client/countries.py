@@ -8,15 +8,15 @@ def country(options, cnx):
             options[i] = options[i].replace("_", " ")
 
     if (options[0] == "all"):
-        getAllCountries(cnx)
+        return getAllCountries(cnx)
     elif (options[0] == "insert"):
-        insertCountry(cnx, options[1:])
+        return insertCountry(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountry(cnx, options[2])
+        return deleteCountry(cnx, options[2])
     elif (options[0] == "update"):
-        updateCountry(cnx, options[1:])
+        return updateCountry(cnx, options[1:])
     elif (options[0] == "get"):
-        getCountry(cnx, options[1:])
+        return getCountry(cnx, options[1:])
 
 
 
@@ -30,11 +30,15 @@ def getAllCountries(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.countriesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountry(cnx, options):
     cursor = cnx.cursor()
@@ -53,11 +57,15 @@ def getCountry(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.countriesColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 
 def insertCountry(cnx, options):
@@ -70,9 +78,11 @@ def insertCountry(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountry(cnx, code):
     cursor = cnx.cursor()
@@ -84,9 +94,11 @@ def deleteCountry(cnx, code):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def updateCountry(cnx, options):
     cursor = cnx.cursor()
@@ -118,7 +130,9 @@ def updateCountry(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
         

@@ -8,15 +8,15 @@ def hdi(options, cnx):
             options[i] = options[i].replace("_", " ")
         
     if (options[0] == "all"):
-        getAllHDI(cnx)
+        return getAllHDI(cnx)
     elif (options[0] == "insert"):
-        insertCountryHDI(cnx, options[1:])
+        return insertCountryHDI(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryHDI(cnx, options[1:])
+        return deleteCountryHDI(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryHDI(cnx, options[1:])
+        return updateCountryHDI(cnx, options[1:])
     elif options[0] == "get":
-        getCountryHDI(cnx, options[1:])
+        return getCountryHDI(cnx, options[1:])
 
 def getAllHDI(cnx):
     cursor = cnx.cursor()
@@ -27,11 +27,15 @@ def getAllHDI(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.HDIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryHDI(cnx, options):
     cursor = cnx.cursor()
@@ -65,11 +69,15 @@ def getCountryHDI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.HDIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 
 def insertCountryHDI(cnx, options):
@@ -87,9 +95,11 @@ def insertCountryHDI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 
 def updateCountryHDI(cnx, options):
@@ -137,9 +147,11 @@ def updateCountryHDI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryHDI(cnx, options):
     cursor = cnx.cursor()
@@ -174,6 +186,8 @@ def deleteCountryHDI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True

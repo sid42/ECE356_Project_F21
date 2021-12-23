@@ -8,15 +8,15 @@ def gni(options, cnx):
             options[i] = options[i].replace("_", " ")
         
     if (options[0] == "all"):
-        getAllGNI(cnx)
+        return getAllGNI(cnx)
     elif (options[0] == "insert"):
-        insertCountryGNI(cnx, options[1:])
+        return insertCountryGNI(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryGNI(cnx, options[1:])
+        return deleteCountryGNI(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryGNI(cnx, options[1:])
+        return updateCountryGNI(cnx, options[1:])
     elif options[0] == "get":
-        getCountryGNI(cnx, options[1:])
+        return getCountryGNI(cnx, options[1:])
 
 def getAllGNI(cnx):
     cursor = cnx.cursor()
@@ -27,11 +27,15 @@ def getAllGNI(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.GNIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryGNI(cnx, options):
     cursor = cnx.cursor()
@@ -65,11 +69,15 @@ def getCountryGNI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.GNIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 
 def insertCountryGNI(cnx, options):
@@ -87,9 +95,11 @@ def insertCountryGNI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 
 def updateCountryGNI(cnx, options):
@@ -137,9 +147,11 @@ def updateCountryGNI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryGNI(cnx, options):
     cursor = cnx.cursor()
@@ -174,7 +186,9 @@ def deleteCountryGNI(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 

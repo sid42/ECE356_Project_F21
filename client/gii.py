@@ -8,15 +8,15 @@ def gii(options, cnx):
             options[i] = options[i].replace("_", " ")
         
     if (options[0] == "all"):
-        getAllGII(cnx)
+        return getAllGII(cnx)
     elif (options[0] == "insert"):
-        insertCountryGII(cnx, options[1:])
+        return insertCountryGII(cnx, options[1:])
     elif (options[0] == "delete"):
-        deleteCountryGII(cnx, options[1:])
+        return deleteCountryGII(cnx, options[1:])
     elif (options[0] == "update"):
-        updateCountryGII(cnx, options[1:])
+        return updateCountryGII(cnx, options[1:])
     elif options[0] == "get":
-        getCountryGII(cnx, options[1:])
+        return getCountryGII(cnx, options[1:])
 
 def getAllGII(cnx):
     cursor = cnx.cursor()
@@ -27,11 +27,15 @@ def getAllGII(cnx):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.GIIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 def getCountryGII(cnx, options):
     cursor = cnx.cursor()
@@ -65,11 +69,15 @@ def getCountryGII(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not query, please check your command and try again or use help")
+        return False
     result = cursor.fetchall()
+    if len(result) == 0: 
+        return False
 
     print(tabulate(result, headers=tables.GIIColumns, tablefmt='pretty'))
 
     cursor.close()
+    return True
 
 
 def insertCountryGII(cnx, options):
@@ -87,9 +95,11 @@ def insertCountryGII(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not insert, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 
 def updateCountryGII(cnx, options):
@@ -137,9 +147,11 @@ def updateCountryGII(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not update, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True
 
 def deleteCountryGII(cnx, options):
     cursor = cnx.cursor()
@@ -174,6 +186,8 @@ def deleteCountryGII(cnx, options):
     except mysql.connector.Error as err:
         print(err) 
         print("Could not delete, please check your command and try again or use help")
+        return False
 
     cnx.commit()
     cursor.close()
+    return True

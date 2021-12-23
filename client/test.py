@@ -1,4 +1,4 @@
-import population, birthDeath, infantMortality, lifeExpectancy, education
+import population, birthDeath, infantMortality, lifeExpectancy, education, gni, hdi, gii, countries
 
 def population_tests(cnx):
     total_population_tests = 11
@@ -378,6 +378,293 @@ def education_tests(cnx):
 
     print(str(tests_passed) + "/" + str(total_education_tests) + " education tests passed")
 
+def gni_tests(cnx):
+    total_gni_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: gni all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the gni table
+    test_cmd = "gni all"
+    if gni.gni(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gni get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query gni data for Canada by country code
+    # We know that the dataset contains gni information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "gni get -code CA" 
+    if gni.gni(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query gni data for United States by country name, year, gender
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "gni get -name United_States -year 2014 -gender M" 
+    if gni.gni(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query gni for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "gni get -name University_of_Waterloo"
+    if gni.gni(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gni insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert gni data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "gni insert CA Canada 2030 M 32532.00"
+    if gni.gni(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the gni data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "gni get -code CA -year 2030"
+    if gni.gni(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: gni update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the gni for Canada in the year 2030 
+    # In this case, it would be the gni value
+    # The operation returns True if the update was successful
+    test_cmd = "gni update -code CA -year 2030 -gender M -gni 50000.0"
+    if gni.gni(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gni delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "gni delete -code CA -year 2030 -gender M"
+    if gni.gni(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_gni_tests) + " gni tests passed")
+
+def hdi_tests(cnx):
+    total_hdi_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: hdi all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the hdi table
+    test_cmd = "hdi all"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: hdi get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query hdi data for Canada by country code
+    # We know that the dataset contains hdi information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "hdi get -code CA" 
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query hdi data for United States by country name, year
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "hdi get -name United_States -year 2014" 
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query hdi for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "hdi get -name University_of_Waterloo"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: hdi insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert hdi data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "hdi insert CA Canada 2030 0.70"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the hdi data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "hdi get -code CA -year 2030"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: hdi update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the hdi for Canada in the year 2030 
+    # In this case, it would be the hdi value
+    # The operation returns True if the update was successful
+    test_cmd = "hdi update -code CA -year 2030 -hdi 0.90"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: hdi delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "hdi delete -code CA -year 2030"
+    if hdi.hdi(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_hdi_tests) + " hdi tests passed")
+
+def gii_tests(cnx):
+    total_gii_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: gii all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the gii table
+    test_cmd = "gii all"
+    if gii.gii(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gii get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query gii data for Canada by country code
+    # We know that the dataset contains gii information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "gii get -code CA" 
+    if gii.gii(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query gii data for United States by country name, year
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "gii get -name United_States -year 2014" 
+    if gii.gii(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query gii for a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "gii get -name University_of_Waterloo"
+    if gii.gii(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gii insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert gii data for Canada for the year 2030
+    # This operation returns True if the insertion was successful
+    test_cmd = "gii insert CA Canada 2030 0.70"
+    if gii.gii(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the gii data for Canada in 2030 which should have been created in the previous test
+    test_cmd = "gii get -code CA -year 2030"
+    if gii.gii(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: gii update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the gii for Canada in the year 2030 
+    # In this case, it would be the gii value
+    # The operation returns True if the update was successful
+    test_cmd = "gii update -code CA -year 2030 -gii 0.90"
+    if gii.gii(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: gii delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "gii delete -code CA -year 2030"
+    if gii.gii(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_gii_tests) + " gii tests passed")
+
+def country_tests(cnx):
+    total_country_tests = 8
+    tests_passed = 0
+
+    # ----------------------------------------------------------------------
+    # Tests for: country all
+    # ----------------------------------------------------------------------
+    # Test 1 : Get all entries in the country table
+    test_cmd = "country all"
+    if countries.country(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: country get
+    # ----------------------------------------------------------------------
+
+    # Test 2 : Query country data for Canada by country code
+    # We know that the dataset contains country information for Canada, so we expect this test to pass
+    # The operation returns True if any rows are found
+    test_cmd = "country get -code CA" 
+    if countries.country(test_cmd.split(" ")[1:], cnx): 
+        tests_passed += 1
+
+    # Test 3 : Query country data for United States by country name
+    # This tests if we obtain data for multiple input flags
+    # The operation returns True if any rows are found
+    test_cmd = "country get -name United_States" 
+    if countries.country(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 4 : Query a country that does not exist 
+    # The operation returns False, if no rows are found, so we should expect a False return below
+    test_cmd = "country get -name University_of_Waterloo"
+    if countries.country(test_cmd.split(" ")[1:], cnx) == False:
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: country insert 
+    # ----------------------------------------------------------------------
+    
+    # Test 5 : Insert country data for Test_Country 
+    # This operation returns True if the insertion was successful
+    test_cmd = "country insert ZZ Test_Country 10000.0"
+    if countries.country(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # Test 6 : A continuation of Test 5 to see if the new entry was actually inserted
+    # We query the Test_Country with country code which should have been created in the previous test
+    test_cmd = "country get -code ZZ"
+    if countries.country(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+    # ----------------------------------------------------------------------
+    # Tests for: country update
+    # ----------------------------------------------------------------------
+    # Test 7 : Update the area for Test_Country 
+    # The operation returns True if the update was successful
+    test_cmd = "country update -code ZZ -area 99999.0"
+    if countries.country(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    # ----------------------------------------------------------------------
+    # Tests for: country delete
+    # ----------------------------------------------------------------------
+    # Test 8 : Deleting the entry created in Test 5
+    # The delete operation will return True if the deletion was successful
+    test_cmd = "country delete -code ZZ"
+    if countries.country(test_cmd.split(" ")[1:], cnx):
+        tests_passed += 1
+
+    print(str(tests_passed) + "/" + str(total_country_tests) + " country tests passed")
+
 def run_tests(cnx, suite):
     if suite == "population": 
         population_tests(cnx)
@@ -389,4 +676,12 @@ def run_tests(cnx, suite):
         life_expectancy_tests(cnx)
     elif suite == "education":
         education_tests(cnx)
+    elif suite == "gni":
+        gni_tests(cnx)
+    elif suite == "hdi":
+        hdi_tests(cnx)
+    elif suite == "gii":
+        gii_tests(cnx)
+    elif suite == "country":
+        country_tests(cnx)
 
