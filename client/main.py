@@ -3,6 +3,7 @@ import mysql.connector
 import getpass
 from tabulate import tabulate
 import countries, education
+import population
 
 print ("Welcome to Group 35's Demographics App!")
 usr = input("Username: ")
@@ -26,21 +27,22 @@ while True:
   print("Demographics> ", end = "") 
   userinput = input()
   flags = userinput.split()
+  
+  if len(flags) == 1: 
+    print('invalid input')
+    continue
+
   if (flags[0] == "country"):
-    if len(flags) > 1:
-      countries.country(flags[1:], cnx)
-    else:
-      print("invalid input")
+    countries.country(flags[1:], cnx)
   elif (flags[0] == "education"):
-    if len(flags) > 1:
-      education.education(flags[1:], cnx)
-    else:
-      print("invalid input")
+    education.education(flags[1:], cnx)
+  elif (flags[0] == "population"): 
+    population.operation(flags[1:], cnx)
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break
   else:
-    print('Not a valid table name. Please use a valid table name or use help for more information')
+    print('Not a valid command name. Please use a valid table name or use help for more information')
 
 
 
