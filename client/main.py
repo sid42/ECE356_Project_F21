@@ -10,8 +10,8 @@ import sys
 print ("Welcome to Group 35's Demographics App!")
 usr = input("Username: ")
 pwd = getpass.getpass()
-host = sys.argv[2]
-db = sys.argv[3]
+host = sys.argv[1]
+db = sys.argv[2]
 global cnx 
 
 try:
