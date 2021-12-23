@@ -36,9 +36,9 @@ def get_feritility_rates_by_options(cnx, options):
     options = cmd_parser.parse(options)
 
     query = "SELECT * FROM fertility_rates"
-    if 'country_code' in options: 
+    if 'code' in options: 
         query += " WHERE country_code = '" + options['code'] + "'"
-    elif 'country_name' in options: 
+    elif 'name' in options: 
         query += " WHERE country_name = '" + options['name'] + "'"
     else: 
         print('invalid input')
@@ -64,9 +64,9 @@ def get_ferility_rates_in_range_by_options(cnx, options):
     options = cmd_parser.parse(options)
 
     query = "SELECT * FROM fertility_rates"
-    if 'country_code' in options: 
+    if 'code' in options: 
         query += " WHERE country_code = '" + options['code'] + "'"
-    elif 'country_name' in options: 
+    elif 'name' in options: 
         query += " WHERE country_name = '" + options['name'] + "'"
 
     query += " AND year > " + options['start_year'] + " AND year < " + options['end_year'] + " ORDER BY year DESC"
@@ -153,7 +153,7 @@ def delete_ferility_rates(cnx, options):
     elif 'name' in options: 
         qry += " WHERE country_name = '" + options['name'] + "'"
     
-    qry += " AND year = " + options['year'] + 
+    qry += " AND year = " + options['year']  
 
     try:
         cursor.execute(qry)
