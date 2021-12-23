@@ -90,7 +90,6 @@ def get_population_in_range_by_options(cnx, options):
 def upsert_population(cnx, options):
     cursor = cnx.cursor()
     options = cmd_parser.parse(options)
-    empty = False
 
     pre_query = "SELECT * FROM population"
     if 'code' in options: 
@@ -110,7 +109,7 @@ def upsert_population(cnx, options):
 
     qry = ""
     if empty: 
-        print('will insert')
+        print('inserting new data')
         if len(options) != len(tables.populationColumns):
             print('Invalid number of arguments, try again')
             return
@@ -127,7 +126,7 @@ def upsert_population(cnx, options):
                  
     else: 
         # update
-        print('will update')
+        print('updating data')
         qry = "UPDATE population SET "
         for i in options: 
             if i in ['code', 'name', 'year']: 
@@ -144,10 +143,30 @@ def upsert_population(cnx, options):
         print(err) 
         print("Could not query, please check your command and try again or use help")
 
-    print(qry)
+    print("data successfully added")
     cnx.commit()
     cursor.close()
 
 def delete_population(cnx, options): 
-    print()
+    cursor = cnx.cursor()
+    options = cmd_parser.parse(options)
+
+    qry = "DELETE FROM population"
+    if 'code' in options: 
+        qry += " WHERE country_code = '" + options['code'] + "'"
+    elif 'name' in options: 
+        qry += " WHERE country_name = '" + options['name'] + "'"
+    
+    qry += " AND year = " + options['year'] + " AND gender = '" + options['gender'] + "'"
+
+    try:
+        cursor.execute(qry)
+    except mysql.connector.Error as err:
+        print(err) 
+        print("Could not query, please check your command and try again or use help")
+
+    print("data successfully added")
+    cnx.commit()
+    cursor.close()
+
 
