@@ -3,6 +3,9 @@ from tabulate import tabulate
 import tables
 
 def le(options, cnx):
+    for i in range(len(options)):
+        options[i] = options[i].replace("_", " ")
+        
     if (options[0] == "all"):
         getAllLE(cnx)
     elif (options[0] == "insert"):

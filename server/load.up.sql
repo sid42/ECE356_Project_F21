@@ -38,8 +38,7 @@ CREATE TABLE IF NOT EXISTS population (
     PRIMARY KEY (country_code, year, gender), 
     FOREIGN KEY (country_code) REFERENCES countries(code),
     INDEX(country_name),
-    INDEX(year),
-    INDEX(gender), 
+    INDEX(year), 
     INDEX(total_midyear_population)
 );
 

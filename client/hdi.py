@@ -3,6 +3,9 @@ from tabulate import tabulate
 import tables
 
 def hdi(options, cnx):
+    for i in range(len(options)):
+        options[i] = options[i].replace("_", " ")
+        
     if (options[0] == "all"):
         getAllHDI(cnx)
     elif (options[0] == "insert"):
