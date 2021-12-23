@@ -38,6 +38,8 @@ while True:
     education.education(flags[1:], cnx)
   elif (flags[0] == "population"): 
     population.operation(flags[1:], cnx)
+  elif (flags[0] == "fertility_rates"): 
+    population.operation(flags[1:], cnx)
   elif (flags[0] == "exit"):
     print("Thanks for using our application! ;)")
     break
