@@ -97,7 +97,7 @@ def upsert_population(cnx, options):
     elif 'name' in options: 
         pre_query += " WHERE country_name = '" + options['name'] + "'"
     
-    pre_query += " AND year = " + options['year'] + " AND gender = '" options['gender']
+    pre_query += " AND year = " + options['year'] + " AND gender = '" + options['gender'] + "'"
 
     try:
         cursor.execute(pre_query)
