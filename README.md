@@ -31,23 +31,24 @@ E.g. : United States -> United_States, Saint Lucia -> Saint_Lucia
         : country get -name Virgin_Islands_U.S.
 
 test
-    To test the functionality of the commands, type in 'test' followed by one of the following operations (eg. test population)
-    population 
-    gni 
-    hdi
-    infant_mortality
-    life_expectancy
-    education 
-    birth_death
-    gii 
-    fertility_rates
-    country 
+
+To test the functionality of the commands, type in 'test' followed by one of the following operations (eg. test population)
+population 
+gni 
+hdi
+infant_mortality
+life_expectancy
+education 
+birth_death
+gii 
+fertility_rates
+country 
 
 
 country 
-    The following commands allow the user to query and update all the country information
-    Attributes: code, name, area
-    NOTE: PK for country: code
+The following commands allow the user to query and update all the country information
+Attributes: code, name, area
+NOTE: PK for country: code
 
     country all -> To show all data present in the country table
     country get -<attribute> <value> ... -> To show specific information from country table by filtering on given attribute values
