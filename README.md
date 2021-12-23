@@ -33,16 +33,17 @@ E.g. : United States -> United_States, Saint Lucia -> Saint_Lucia
 ### test
 
 To test the functionality of the commands, type in 'test' followed by one of the following operations (eg. test population)
-population 
-gni 
-hdi
-infant_mortality
-life_expectancy
-education 
-birth_death
-gii 
-fertility_rates
-country 
+
+    population 
+    gni 
+    hdi
+    infant_mortality
+    life_expectancy
+    education 
+    birth_death
+    gii 
+    fertility_rates
+    country 
 
 
 ### country 
